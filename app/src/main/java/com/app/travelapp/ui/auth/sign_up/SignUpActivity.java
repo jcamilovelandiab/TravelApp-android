@@ -26,6 +26,7 @@ import com.app.travelapp.ui.auth.AuthResult;
 import com.app.travelapp.ui.auth.AuthViewModelFactory;
 import com.app.travelapp.ui.auth.LoggedInUserView;
 import com.app.travelapp.ui.auth.login.LoginActivity;
+import com.app.travelapp.ui.main.MainActivity;
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -197,8 +198,11 @@ public class SignUpActivity extends AppCompatActivity {
         String welcome = getString(R.string.welcome) + " "+model.getDisplayName()+"!";
         // TODO : initiate successful logged in experience
         Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
-        //Intent intent = new Intent(this, MainActivity.class);
-        //startActivity(intent);
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        setResult(Activity.RESULT_OK);
+        //Complete and destroy login activity once successful
+        finish();
     }
 
     private void addGreenCheckIcon(final EditText editText){

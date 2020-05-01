@@ -12,24 +12,24 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.app.travelapp.R;
 
-public class DashboardFragment extends Fragment {
+public class SearchFragment extends Fragment {
 
-    private DashboardViewModel mViewModel;
+    private SearchViewModel mViewModel;
 
-    public static DashboardFragment newInstance() {
-        return new DashboardFragment();
+    public static SearchFragment newInstance() {
+        return new SearchFragment();
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState){
-        return inflater.inflate(R.layout.add_fragment, container, false);
+        return inflater.inflate(R.layout.fragment_add, container, false);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(DashboardFragment.class);
+        mViewModel = ViewModelProviders.of(this).get(SearchViewModel.class);
         // TODO: Use the ViewModel
     }
 }

@@ -13,8 +13,22 @@ import java.util.Map;
  */
 public class DataSourceCache {
 
-    private static Map<String, User> usersMp = new HashMap<>();
+    private static Map<String, User> usersMp;
     private User loggedUser;
+    private static DataSourceCache instance;
+
+    private DataSourceCache(){
+        usersMp = new HashMap<>();
+        User user = new User("camilo@mail.com", "camilo123", "juan camilo");
+        usersMp.put(user.getEmail(), user);
+    }
+
+    public static DataSourceCache getInstance(){
+        if(instance==null){
+            instance = new DataSourceCache();
+        }
+        return instance;
+    }
 
     // Users
     public Result<LoggedInUser> login(String email, String password) {

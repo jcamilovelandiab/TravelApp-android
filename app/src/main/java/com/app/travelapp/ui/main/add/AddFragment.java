@@ -2,6 +2,7 @@ package com.app.travelapp.ui.main.add;
 
 import androidx.lifecycle.ViewModelProviders;
 
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -25,7 +26,9 @@ public class AddFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState){
-        return inflater.inflate(R.layout.add_fragment, container, false);
+        View root = inflater.inflate(R.layout.fragment_add, container, false);
+
+        return root;
     }
 
     @Override

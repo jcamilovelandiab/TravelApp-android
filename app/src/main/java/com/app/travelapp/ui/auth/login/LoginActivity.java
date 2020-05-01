@@ -30,6 +30,7 @@ import com.app.travelapp.ui.auth.sign_up.SignUpActivity;
 import com.app.travelapp.ui.auth.AuthResult;
 import com.app.travelapp.ui.auth.AuthViewModelFactory;
 import com.app.travelapp.ui.auth.LoggedInUserView;
+import com.app.travelapp.ui.main.MainActivity;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -162,8 +163,11 @@ public class LoginActivity extends AppCompatActivity {
         String welcome = getString(R.string.welcome) +" "+ model.getDisplayName() +"!";
         // TODO : initiate successful logged in experience
         Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
-        //Intent intent = new Intent(this, MainActivity.class);
-        //startActivity(intent);
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        setResult(Activity.RESULT_OK);
+        //Complete and destroy login activity once successful
+        finish();
     }
 
     private void showLoginFailed(@StringRes final Integer errorString) {
