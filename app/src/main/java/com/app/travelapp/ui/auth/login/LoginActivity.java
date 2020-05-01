@@ -26,7 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.travelapp.R;
-import com.app.travelapp.SignUpActivity;
+import com.app.travelapp.ui.auth.sign_up.SignUpActivity;
 import com.app.travelapp.ui.auth.AuthResult;
 import com.app.travelapp.ui.auth.AuthViewModelFactory;
 import com.app.travelapp.ui.auth.LoggedInUserView;

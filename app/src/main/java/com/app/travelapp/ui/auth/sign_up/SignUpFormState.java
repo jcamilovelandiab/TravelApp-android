@@ -1,4 +1,4 @@
-package com.app.travelapp.ui.auth.signup;
+package com.app.travelapp.ui.auth.sign_up;
 
 import androidx.annotation.Nullable;
 

@@ -10,6 +10,7 @@ import com.app.travelapp.data.datasources.DataSourceCache;
 import com.app.travelapp.data.datasources.DataSourceFirebase;
 import com.app.travelapp.data.repositories.UserRepository;
 import com.app.travelapp.ui.auth.login.LoginViewModel;
+import com.app.travelapp.ui.auth.sign_up.SignUpViewModel;
 
 /**
  * ViewModel provider factory to instantiate LoginViewModel.
@@ -18,7 +19,6 @@ import com.app.travelapp.ui.auth.login.LoginViewModel;
 public class AuthViewModelFactory implements ViewModelProvider.Factory {
 
     private Context context;
-
     public AuthViewModelFactory(Context context){
         this.context = context;
     }
@@ -30,6 +30,8 @@ public class AuthViewModelFactory implements ViewModelProvider.Factory {
         DataSourceCache dataSourceCache = new DataSourceCache();
         if (modelClass.isAssignableFrom(LoginViewModel.class)) {
             return (T) new LoginViewModel(UserRepository.getInstance(dataSourceCache, dataSourceFirebase));
+        } else if (modelClass.isAssignableFrom(SignUpViewModel.class)) {
+            return (T) new SignUpViewModel(UserRepository.getInstance(dataSourceCache, dataSourceFirebase));
         } else {
             throw new IllegalArgumentException("Unknown ViewModel class");
         }

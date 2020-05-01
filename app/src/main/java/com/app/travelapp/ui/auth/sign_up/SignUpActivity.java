@@ -1,4 +1,4 @@
-package com.app.travelapp.ui.auth.signup;
+package com.app.travelapp.ui.auth.sign_up;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -40,6 +40,7 @@ public class SignUpActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sign_up);
         signUpViewModel = ViewModelProviders.of(this, new AuthViewModelFactory(getApplicationContext())).get(SignUpViewModel.class);
         connectViewWithModel();
+
         configureTextWatchers();
         configureLoginButton();
         configureSignUpButton();
@@ -48,13 +49,13 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void connectViewWithModel(){
-        btn_login = findViewById(R.id.signup_btn_sign_in);
-        btn_sign_up = findViewById(R.id.signup_btn_sign_up);
-        et_full_name = findViewById(R.id.signup_et_full_name);
-        et_email = findViewById(R.id.signup_et_email);
-        et_password = findViewById(R.id.signup_et_password);
-        et_confirm_password = findViewById(R.id.signup_et_confirm_password);
-        pg_loading = findViewById(R.id.signup_pg_loading);
+        btn_login = findViewById(R.id.sign_up_btn_sign_in);
+        btn_sign_up = findViewById(R.id.sign_up_btn_sign_up);
+        et_full_name = findViewById(R.id.sign_up_et_full_name);
+        et_email = findViewById(R.id.sign_up_et_email);
+        et_password = findViewById(R.id.sign_up_et_password);
+        et_confirm_password = findViewById(R.id.sign_up_et_confirm_password);
+        pg_loading = findViewById(R.id.sign_up_pg_loading);
     }
 
     private void configureSignUpFormStateObserver(){
