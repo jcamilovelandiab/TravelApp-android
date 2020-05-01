@@ -25,7 +25,7 @@
             android:layout_gravity="center"
             android:layout_width="200dp"
             android:layout_height="200dp"
-            android:src="@drawable/TravelApp"
+            android:src="@drawable/travel_app"
             android:scaleType="centerCrop"
             >
 
