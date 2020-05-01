@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.app.travelapp.R;
 import com.app.travelapp.data.model.Place;
@@ -42,7 +44,13 @@ public class PlaceArrayAdapter extends BaseAdapter {
         View view = convertView;
         if(view==null){
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            //view =inflater.inflate(R.layout.);
+            view =inflater.inflate(R.layout.layout_place, null);
+            Place place = places.get(position);
+            TextView tv_author, tv_address, tv_description;
+            ImageView iv_picture;
+            tv_author = view.findViewById(R.id.layout_place_tv_author);
+            tv_address = view.findViewById(R.id.layout_place_tv_address);
+            tv_description = view.findViewById(R.id.layout_place_tv_description);
         }
         return view;
     }
