@@ -17,6 +17,9 @@
     <string name="prompt_full_name">Full name</string>
     <string name="prompt_confirm_password">Confirm password</string>
     <string name="prompt_search_place">Search places by name</string>
+    <string name="prompt_place_name">Place name</string>
+    <string name="prompt_place_description">Description</string>
+    <string name="prompt_place_address">Address</string>
 
     <!-- Strings related to buttons -->
     <string name="action_sign_in">Already a member? Login</string>
@@ -34,5 +37,6 @@
     <string name="title_add">Add</string>
     <string name="title_profile">Profile</string>
     <string name="title_search">Search</string>
+    <string name="action_save">Save</string>
 
 </resources>

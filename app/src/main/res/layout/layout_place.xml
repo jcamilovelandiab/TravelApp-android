@@ -49,12 +49,14 @@
             </TextView>
 
             <ImageView
+                android:adjustViewBounds="true"
                 android:layout_marginTop="10dp"
                 android:src="@drawable/places1"
                 android:scaleType="centerCrop"
                 android:id="@+id/layout_place_iv_picture"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
+                android:layout_height="wrap_content"
+                android:maxHeight="300dp"
                 />
 
             <LinearLayout
