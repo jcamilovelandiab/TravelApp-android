@@ -29,4 +29,8 @@ public class PlaceRepository {
         return dataSourceCache.getPlaces();
     }
 
+    public List<Place> findByName(String name){
+        return dataSourceCache.getPlacesByName(name);
+    }
+
 }

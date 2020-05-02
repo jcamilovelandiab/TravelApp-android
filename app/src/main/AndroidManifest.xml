@@ -10,8 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".ui.main.MainActivity"
-            android:label="@string/title_activity_main"></activity>
+            android:name=".ui.main.MainActivity"></activity>
         <activity
             android:name=".ui.auth.sign_up.SignUpActivity"
             android:theme="@style/AppTheme.NoActionBar" />

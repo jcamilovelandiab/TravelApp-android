@@ -31,17 +31,22 @@ public class DataSourceCache {
 
 
         Place place = new Place(UUID.randomUUID().toString()+"",
-                "Guatapé", "Un lugar hermoso y fascinante",
+                "Guatape", "Un lugar hermoso y fascinante",
                 "Guatapé, Antioquia, Colombia",
                 new ArrayList<String>(), user);
 
         Place place2 = new Place(UUID.randomUUID().toString()+"",
-                "Sopó", "Un lugar tranquilo, y perfecto para relajarse",
+                "Sopo", "Un lugar tranquilo, y perfecto para relajarse",
                 "Sopó, Cundinamarca, Colombia",
                 new ArrayList<String>(), user2);
+        Place place3 = new Place(UUID.randomUUID().toString()+"",
+                "Sopo", "Un lugar espectacular para descansar",
+                "Sopó, Cundinamarca, Colombia",
+                new ArrayList<String>(), user);
         placesMap = new HashMap<>();
         placesMap.put(place.getPlaceId(), place);
         placesMap.put(place2.getPlaceId(), place2);
+        placesMap.put(place3.getPlaceId(), place3);
         System.out.println(placesMap.size());
     }
 
@@ -96,9 +101,19 @@ public class DataSourceCache {
     }
 
     public List<Place> getPlaces(){
-        List<Place> places = new ArrayList();
+        List<Place> places = new ArrayList<>();
         for (Map.Entry<String, Place> entry: placesMap.entrySet()){
             places.add(entry.getValue());
+        }
+        return places;
+    }
+
+    public List<Place> getPlacesByName(String name){
+        List<Place> places = new ArrayList<>();
+        for(Map.Entry<String, Place> entry: placesMap.entrySet()){
+            if(entry.getValue().getName().toLowerCase().equals(name.toLowerCase())){
+                places.add(entry.getValue());
+            }
         }
         return places;
     }

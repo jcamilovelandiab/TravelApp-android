@@ -10,6 +10,7 @@ import com.app.travelapp.data.datasources.DataSourceCache;
 import com.app.travelapp.data.datasources.DataSourceFirebase;
 import com.app.travelapp.data.repositories.PlaceRepository;
 import com.app.travelapp.ui.main.home.HomeViewModel;
+import com.app.travelapp.ui.main.search.SearchViewModel;
 
 public class ViewModelFactory implements ViewModelProvider.Factory {
 
@@ -25,7 +26,9 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
         DataSourceCache dataSourceCache = DataSourceCache.getInstance();
         if (modelClass.isAssignableFrom(HomeViewModel.class)) {
             return (T) new HomeViewModel(PlaceRepository.getInstance(dataSourceCache, dataSourceFirebase));
-        }else {
+        } else if(modelClass.isAssignableFrom(SearchViewModel.class)){
+            return (T) new SearchViewModel(PlaceRepository.getInstance(dataSourceCache, dataSourceFirebase));
+        } else {
             throw new IllegalArgumentException("Unknown ViewModel class");
         }
     }
