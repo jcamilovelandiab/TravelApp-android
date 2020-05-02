@@ -9,6 +9,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+
 import com.app.travelapp.R;
 import com.app.travelapp.data.model.Place;
 
@@ -16,13 +18,23 @@ import java.util.ArrayList;
 
 public class PlaceArrayAdapter extends BaseAdapter {
 
+    @Nullable
+    Integer backgroundColor;
     ArrayList<Place> places;
     Context context;
 
     public PlaceArrayAdapter(Context context, ArrayList<Place> places) {
         this.places = places;
         this.context = context;
+        this.backgroundColor = null;
     }
+
+    public PlaceArrayAdapter(Context context, ArrayList<Place> places, Integer backgroundColor) {
+        this.places = places;
+        this.context = context;
+        this.backgroundColor = backgroundColor;
+    }
+
 
     @Override
     public int getCount() {
@@ -45,6 +57,7 @@ public class PlaceArrayAdapter extends BaseAdapter {
         if(view==null){
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view =inflater.inflate(R.layout.layout_place, null);
+            if(this.backgroundColor!=null) view.setBackgroundColor(this.backgroundColor);
             Place place = places.get(position);
             TextView tv_author, tv_name, tv_address, tv_description;
             ImageView iv_picture;

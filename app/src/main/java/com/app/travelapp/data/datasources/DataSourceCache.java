@@ -64,7 +64,8 @@ public class DataSourceCache {
             if(usersMap.containsKey(email) && usersMap.get(email).getPassword().equals(password)){
                 loggedUser = usersMap.get(email);
                 //String first_name = loggedUser.getFull_name().split(" ")[0];
-                LoggedInUser loggedInUser = new LoggedInUser(loggedUser.getEmail(), loggedUser.getFull_name());
+                LoggedInUser loggedInUser = new LoggedInUser(loggedUser.getUsername()+"",
+                        loggedUser.getEmail()+"", loggedUser.getFull_name()+"");
                 return new Result.Success<>(loggedInUser);
             }
             return new Result.Error(new IOException("Invalid login"));
@@ -83,7 +84,8 @@ public class DataSourceCache {
         loggedUser = user;
         usersMap.put(user.getEmail(), user);
         //String first_name = loggedUser.getFull_name().split(" ")[0];
-        LoggedInUser loggedInUser = new LoggedInUser(loggedUser.getEmail(), loggedUser.getFull_name());
+        LoggedInUser loggedInUser = new LoggedInUser(loggedUser.getUsername()+"",
+                loggedUser.getEmail()+"", loggedUser.getFull_name()+"");
         return new Result.Success<>(loggedInUser);
     }
 
@@ -118,4 +120,13 @@ public class DataSourceCache {
         return places;
     }
 
+    public List<Place> getPlacesFromUser(User user) {
+        List<Place> places = new ArrayList<>();
+        for(Map.Entry<String, Place> entry: placesMap.entrySet()){
+            if(entry.getValue().getAuthor().getEmail().equals(user.getEmail())){
+                places.add(entry.getValue());
+            }
+        }
+        return places;
+    }
 }

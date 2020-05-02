@@ -1,5 +1,7 @@
 package com.app.travelapp.data.model;
 
+import java.util.List;
+
 public class User {
 
     private String userId;
@@ -7,11 +9,18 @@ public class User {
     private String email;
     private String password;
     private String full_name;
+    private List<Place> places;
 
     public User(String username, String email, String password, String full_name) {
         this.username = username;
         this.email = email;
         this.password = password;
+        this.full_name = full_name;
+    }
+
+    public User(String username, String email, String full_name) {
+        this.username = username;
+        this.email = email;
         this.full_name = full_name;
     }
 
@@ -47,4 +56,19 @@ public class User {
         this.username = username;
     }
 
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public List<Place> getPlaces() {
+        return places;
+    }
+
+    public void setPlaces(List<Place> places) {
+        this.places = places;
+    }
 }

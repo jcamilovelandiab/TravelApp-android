@@ -1,10 +1,13 @@
 package com.app.travelapp.data.repositories;
 
+import com.app.travelapp.data.model.Place;
 import com.app.travelapp.data.model.User;
 import com.app.travelapp.utils.Result;
 import com.app.travelapp.data.datasources.DataSourceCache;
 import com.app.travelapp.data.datasources.DataSourceFirebase;
 import com.app.travelapp.data.model.LoggedInUser;
+
+import java.util.List;
 
 /**
  * Class that requests authentication and user information from the remote data source and
@@ -43,6 +46,10 @@ public class UserRepository {
         dataSourceCache.logout();
     }
 
+    public LoggedInUser getLoggedInUser(){
+        return user;
+    }
+
     private void setLoggedInUser(LoggedInUser user) {
         this.user = user;
         // If user credentials will be cached in local storage, it is recommended it be encrypted
@@ -65,6 +72,10 @@ public class UserRepository {
             setLoggedInUser(((Result.Success<LoggedInUser>) result).getData());
         }
         return result;
+    }
+
+    public List<Place> getPlacesFromUser(User user){
+        return dataSourceCache.getPlacesFromUser(user);
     }
 
 }

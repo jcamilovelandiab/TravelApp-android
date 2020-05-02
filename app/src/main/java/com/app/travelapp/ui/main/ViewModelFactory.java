@@ -9,7 +9,9 @@ import androidx.lifecycle.ViewModelProvider;
 import com.app.travelapp.data.datasources.DataSourceCache;
 import com.app.travelapp.data.datasources.DataSourceFirebase;
 import com.app.travelapp.data.repositories.PlaceRepository;
+import com.app.travelapp.data.repositories.UserRepository;
 import com.app.travelapp.ui.main.home.HomeViewModel;
+import com.app.travelapp.ui.main.profile.ProfileViewModel;
 import com.app.travelapp.ui.main.search.SearchViewModel;
 
 public class ViewModelFactory implements ViewModelProvider.Factory {
@@ -28,6 +30,8 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
             return (T) new HomeViewModel(PlaceRepository.getInstance(dataSourceCache, dataSourceFirebase));
         } else if(modelClass.isAssignableFrom(SearchViewModel.class)){
             return (T) new SearchViewModel(PlaceRepository.getInstance(dataSourceCache, dataSourceFirebase));
+        }  else if(modelClass.isAssignableFrom(ProfileViewModel.class)){
+            return (T) new ProfileViewModel(UserRepository.getInstance(dataSourceCache, dataSourceFirebase));
         } else {
             throw new IllegalArgumentException("Unknown ViewModel class");
         }
