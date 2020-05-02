@@ -12,11 +12,12 @@ import java.util.List;
 public class HomeViewModel extends ViewModel {
 
     private PlaceRepository placeRepository;
-    private MutableLiveData<List<Place>> placeList;
+    private MutableLiveData<List<Place>> placeList = new MutableLiveData<>();
 
     public HomeViewModel(PlaceRepository placeRepository) {
         this.placeRepository = placeRepository;
-        placeList.setValue(placeRepository.findAll());
+        List<Place> places = placeRepository.findAll();
+        placeList.setValue(places);
     }
 
     public LiveData<List<Place>> getPlaces() {

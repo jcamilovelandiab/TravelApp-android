@@ -19,7 +19,7 @@ public class PlaceArrayAdapter extends BaseAdapter {
     ArrayList<Place> places;
     Context context;
 
-    public PlaceArrayAdapter(ArrayList<Place> places, Context context) {
+    public PlaceArrayAdapter(Context context, ArrayList<Place> places) {
         this.places = places;
         this.context = context;
     }
@@ -46,17 +46,19 @@ public class PlaceArrayAdapter extends BaseAdapter {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view =inflater.inflate(R.layout.layout_place, null);
             Place place = places.get(position);
-            TextView tv_author, tv_address, tv_description;
+            TextView tv_author, tv_name, tv_address, tv_description;
             ImageView iv_picture;
 
             iv_picture = view.findViewById(R.id.layout_place_iv_picture);
             tv_author = view.findViewById(R.id.layout_place_tv_author);
+            tv_name = view.findViewById(R.id.layout_place_tv_name);
             tv_address = view.findViewById(R.id.layout_place_tv_address);
             tv_description = view.findViewById(R.id.layout_place_tv_description);
-            tv_author.setText(place.getAuthor().getFull_name());
+
+            tv_author.setText(place.getAuthor().getUsername());
+            tv_name.setText(place.getName());
             tv_address.setText(place.getAddress());
             tv_description.setText(place.getDescription());
-
             iv_picture.setImageDrawable(view.getResources().getDrawable(R.drawable.places1));
         }
         return view;

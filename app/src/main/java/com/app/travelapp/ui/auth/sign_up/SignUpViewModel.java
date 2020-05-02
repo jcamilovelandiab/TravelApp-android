@@ -39,28 +39,31 @@ public class SignUpViewModel extends ViewModel {
         this.signUpResult = signUpResult;
     }
 
-    void signUpDataChanged(String full_name, String email, String password,  String confirm_password){
-        if(!Validator.isNameValid(full_name)){
-            signUpFormState.setValue(new SignUpFormState(R.string.invalid_name, null, null, null));
+    void signUpDataChanged(String full_name, String username, String email, String password,  String confirm_password){
+        if(!Validator.isNameValid(full_name)) {
+            signUpFormState.setValue(new SignUpFormState(R.string.invalid_name, null, null, null, null));
+        } else if(!Validator.isUsernameValid(username)){
+            signUpFormState.setValue(new SignUpFormState(null, R.string.invalid_username, null, null, null));
         }else if(!Validator.isEmailValid(email)){
-            signUpFormState.setValue(new SignUpFormState(null, R.string.invalid_email, null, null));
+            signUpFormState.setValue(new SignUpFormState(null, null, R.string.invalid_email, null, null));
         }else if(!Validator.isPasswordValid(password)){
-            signUpFormState.setValue(new SignUpFormState(null, null, R.string.invalid_password, null));
+            signUpFormState.setValue(new SignUpFormState(null, null, null, R.string.invalid_password, null));
         }else if(!Validator.isConfirmPasswordValid(password, confirm_password)){
-            signUpFormState.setValue(new SignUpFormState(null, null, null, R.string.invalid_confirmation_password));
+            signUpFormState.setValue(new SignUpFormState(null, null, null, null, R.string.invalid_confirmation_password));
         }else{
             signUpFormState.setValue(new SignUpFormState(true));
         }
     }
 
-    public void signup(String full_name, String email, String password){
-        User user = new User(full_name, email, password);
+    public void signUp(String full_name, String username,  String email, String password){
+        User user = new User(username,full_name, email, password);
         Result<LoggedInUser> result = userRepository.signUp(user);
         if(result instanceof Result.Success){
             LoggedInUser loggedInUser = ((Result.Success<LoggedInUser>) result).getData();
             signUpResult.setValue(new AuthResult(new LoggedInUserView(loggedInUser.getFull_name())));
         }else{
-            signUpResult.setValue(new AuthResult(R.string.sign_up_failed));
+            Result.Error error = (Result.Error) result;
+            signUpResult.setValue(new AuthResult(error.getError().getMessage()));
         }
     }
 

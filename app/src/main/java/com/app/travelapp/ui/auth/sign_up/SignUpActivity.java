@@ -31,7 +31,7 @@ import com.app.travelapp.ui.main.MainActivity;
 public class SignUpActivity extends AppCompatActivity {
 
     Button btn_login, btn_sign_up;
-    EditText et_full_name, et_email, et_password, et_confirm_password;
+    EditText et_full_name, et_username, et_email, et_password, et_confirm_password;
     ProgressBar pg_loading;
     SignUpViewModel signUpViewModel;
 
@@ -53,6 +53,7 @@ public class SignUpActivity extends AppCompatActivity {
         btn_login = findViewById(R.id.sign_up_btn_sign_in);
         btn_sign_up = findViewById(R.id.sign_up_btn_sign_up);
         et_full_name = findViewById(R.id.sign_up_et_full_name);
+        et_username = findViewById(R.id.sign_up_et_username);
         et_email = findViewById(R.id.sign_up_et_email);
         et_password = findViewById(R.id.sign_up_et_password);
         et_confirm_password = findViewById(R.id.sign_up_et_confirm_password);
@@ -71,6 +72,12 @@ public class SignUpActivity extends AppCompatActivity {
                     et_full_name.setError(getString(signUpFormState.getFull_nameError()));
                 }else if(!et_full_name.getText().toString().equals("")){
                     addGreenCheckIcon(et_full_name);
+                }
+
+                if(signUpFormState.getUsernameError()!=null){
+                    et_username.setError(getString(signUpFormState.getUsernameError()));
+                }else if(!et_username.getText().toString().equals("")){
+                    addGreenCheckIcon(et_username);
                 }
 
                 if(signUpFormState.getEmailError()!=null){
@@ -114,7 +121,7 @@ public class SignUpActivity extends AppCompatActivity {
         });
     }
 
-    private void showSignUpFailed(@StringRes final Integer errorString){
+    private void showSignUpFailed(final String errorString){
         runOnUiThread(new Runnable() {
             public void run() {
                 Toast toast = Toast.makeText(SignUpActivity.this, errorString, Toast.LENGTH_SHORT);
@@ -143,6 +150,7 @@ public class SignUpActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
                 signUpViewModel.signUpDataChanged(
                         et_full_name.getText().toString()+"",
+                        et_username.getText().toString()+"",
                         et_email.getText().toString()+"",
                         et_password.getText().toString()+"",
                         et_confirm_password.getText().toString()+""
@@ -159,6 +167,7 @@ public class SignUpActivity extends AppCompatActivity {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     signUpViewModel.signUpDataChanged(
                             et_full_name.getText().toString()+"",
+                            et_username.getText().toString()+"",
                             et_email.getText().toString()+"",
                             et_password.getText().toString()+"",
                             et_confirm_password.getText().toString()+""
@@ -187,7 +196,8 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 pg_loading.setVisibility(View.VISIBLE);
-                signUpViewModel.signup(et_full_name.getText().toString()+"",
+                signUpViewModel.signUp(et_full_name.getText().toString()+"",
+                        et_username.getText().toString()+"",
                         et_email.getText().toString()+"",
                         et_password.getText().toString()+"");
             }

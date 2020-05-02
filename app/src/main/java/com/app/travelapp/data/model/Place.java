@@ -12,6 +12,7 @@ public class Place {
     User author;
 
     public Place(String placeId, String name, String description, String address, List<String> images, User author) {
+        this.placeId = placeId;
         this.name = name;
         this.description = description;
         this.address = address;

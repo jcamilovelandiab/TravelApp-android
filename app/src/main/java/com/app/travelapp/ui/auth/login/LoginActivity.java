@@ -170,7 +170,7 @@ public class LoginActivity extends AppCompatActivity {
         finish();
     }
 
-    private void showLoginFailed(@StringRes final Integer errorString) {
+    private void showLoginFailed(final String errorString) {
         runOnUiThread(new Runnable() {
             public void run() {
                 Toast toast = Toast.makeText(LoginActivity.this, errorString, Toast.LENGTH_SHORT);

@@ -8,7 +8,8 @@ public class User {
     private String password;
     private String full_name;
 
-    public User(String email, String password, String full_name) {
+    public User(String username, String email, String password, String full_name) {
+        this.username = username;
         this.email = email;
         this.password = password;
         this.full_name = full_name;
@@ -45,4 +46,5 @@ public class User {
     public void setUsername(String username) {
         this.username = username;
     }
+
 }

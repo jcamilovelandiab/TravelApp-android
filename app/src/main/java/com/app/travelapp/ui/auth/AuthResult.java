@@ -11,9 +11,9 @@ public class AuthResult {
     @Nullable
     private LoggedInUserView success;
     @Nullable
-    private Integer error;
+    private String error;
 
-    public AuthResult(@Nullable Integer error) {
+    public AuthResult(@Nullable String error) {
         this.error = error;
     }
 
@@ -27,7 +27,7 @@ public class AuthResult {
     }
 
     @Nullable
-    public Integer getError() {
+    public String getError() {
         return error;
     }
 }

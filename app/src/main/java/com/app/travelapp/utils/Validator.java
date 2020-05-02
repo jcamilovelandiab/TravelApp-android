@@ -11,6 +11,14 @@ public class Validator {
         return Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
+    public static boolean isUsernameValid(String username){
+        if(username==null || username.length()<=5 || username.length()>21){
+            return false;
+        }
+        String regex = "^[\\p{L}0-9]+$";
+        return username.matches(regex);
+    }
+
     public static boolean isPasswordValid(String password){
         return password!=null && password.trim().length()>5;
     }

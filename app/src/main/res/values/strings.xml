@@ -3,6 +3,7 @@
     <!-- Strings related to errors -->
     <string name="invalid_name">Not a valid full name</string>
     <string name="invalid_email">Not a valid email</string>
+    <string name="invalid_username">Username must be >5 characters and contain letters or numbers</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="invalid_confirmation_password">Passwords don\'t match</string>
     <string name="login_failed">"Login failed"</string>
@@ -10,6 +11,7 @@
 
     <string name="welcome">Welcome</string>
     <!-- Strings related to fields -->
+    <string name="prompt_username">Username</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
     <string name="prompt_full_name">Full name</string>

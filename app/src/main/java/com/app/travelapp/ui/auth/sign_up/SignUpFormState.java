@@ -11,19 +11,27 @@ class SignUpFormState {
 
     @Nullable
     private Integer full_nameError;
+
+    @Nullable
+    private Integer usernameError;
+
     @Nullable
     private Integer emailError;
+
     @Nullable
     private Integer passwordError;
+
     @Nullable
     private Integer confirm_passwordError;
     private boolean isDataValid;
 
     SignUpFormState(@Nullable Integer full_nameError,
-                           @Nullable Integer emailError,
-                           @Nullable Integer passwordError,
-                           @Nullable Integer confirm_passwordError) {
+                    @Nullable Integer usernameError,
+                    @Nullable Integer emailError,
+                    @Nullable Integer passwordError,
+                    @Nullable Integer confirm_passwordError) {
         this.full_nameError = full_nameError;
+        this.usernameError = usernameError;
         this.emailError = emailError;
         this.passwordError = passwordError;
         this.confirm_passwordError = confirm_passwordError;
@@ -32,6 +40,7 @@ class SignUpFormState {
 
     SignUpFormState(boolean isDataValid){
         this.full_nameError = null;
+        this.usernameError = null;
         this.emailError = null;
         this.passwordError = null;
         this.confirm_passwordError = null;
@@ -72,6 +81,15 @@ class SignUpFormState {
 
     void setConfirm_passwordError(@Nullable Integer confirm_passwordError) {
         this.confirm_passwordError = confirm_passwordError;
+    }
+
+    @Nullable
+    public Integer getUsernameError() {
+        return usernameError;
+    }
+
+    public void setUsernameError(@Nullable Integer usernameError) {
+        this.usernameError = usernameError;
     }
 
     boolean isDataValid() {
