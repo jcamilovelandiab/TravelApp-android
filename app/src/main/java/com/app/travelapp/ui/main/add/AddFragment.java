@@ -103,6 +103,7 @@ public class AddFragment extends Fragment {
                 }
                 if(basicResult.getSuccess()!=null){
                     showSuccessMessage("Your place has been successfully posted");
+                    cleanFields();
                 }
             }
         });
@@ -162,6 +163,13 @@ public class AddFragment extends Fragment {
                 toast.show();
             }
         });
+    }
+
+    private void cleanFields(){
+        picture_path = "";
+        et_place_name.setText("");
+        et_place_description.setText("");
+        et_place_address.setText("");
     }
 
 }
