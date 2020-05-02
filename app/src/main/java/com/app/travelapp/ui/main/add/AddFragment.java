@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,10 +31,10 @@ import com.app.travelapp.utils.BasicResult;
 public class AddFragment extends Fragment {
 
     private AddViewModel addViewModel;
-
-    EditText et_place_name, et_place_description, et_place_address;
-    ImageView iv_place_picture;
-    Button btn_save;
+    private ScrollView sv_scrollview;
+    private EditText et_place_name, et_place_description, et_place_address;
+    private ImageView iv_place_picture;
+    private Button btn_save;
 
     String picture_path="testing", current_picture_path="";
 
@@ -47,6 +48,7 @@ public class AddFragment extends Fragment {
         configureTextWatchers();
         prepareFormStateObserver();
         prepareResultObserver();
+        configureEditTexts();
         return root;
     }
 
@@ -56,6 +58,7 @@ public class AddFragment extends Fragment {
         et_place_address = root.findViewById(R.id.add_et_place_address);
         iv_place_picture = root.findViewById(R.id.add_iv_place_picture);
         btn_save = root.findViewById(R.id.add_btn_save);
+        sv_scrollview = root.findViewById(R.id.add_sv_scrollview);
     }
 
     private void configureBtnSave() {
@@ -130,6 +133,25 @@ public class AddFragment extends Fragment {
         et_place_name.addTextChangedListener(textWatcher);
         et_place_description.addTextChangedListener(textWatcher);
         et_place_address.addTextChangedListener(textWatcher);
+    }
+
+    private void configureEditTexts(){
+        configureEditTextOnFocus(et_place_name);
+        configureEditTextOnFocus(et_place_address);
+        configureEditTextOnFocus(et_place_description);
+    }
+
+    private void configureEditTextOnFocus(final EditText edit_text){
+        edit_text.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus){
+                    int [] XY = new int[2];
+                    edit_text.getLocationOnScreen(XY);
+                    sv_scrollview.scrollTo(XY[0], XY[1]);
+                }
+            }
+        });
     }
 
     private void showErrorMessage(final String errorMsg, long delayMillis){

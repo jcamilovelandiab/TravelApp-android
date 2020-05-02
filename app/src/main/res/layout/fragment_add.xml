@@ -7,6 +7,7 @@
     tools:context=".ui.main.add.AddFragment">
 
     <ScrollView
+        android:id="@+id/add_sv_scrollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingBottom="?attr/actionBarSize">
