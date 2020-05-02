@@ -48,9 +48,16 @@ public class PlaceArrayAdapter extends BaseAdapter {
             Place place = places.get(position);
             TextView tv_author, tv_address, tv_description;
             ImageView iv_picture;
+
+            iv_picture = view.findViewById(R.id.layout_place_iv_picture);
             tv_author = view.findViewById(R.id.layout_place_tv_author);
             tv_address = view.findViewById(R.id.layout_place_tv_address);
             tv_description = view.findViewById(R.id.layout_place_tv_description);
+            tv_author.setText(place.getAuthor().getFull_name());
+            tv_address.setText(place.getAddress());
+            tv_description.setText(place.getDescription());
+
+            iv_picture.setImageDrawable(view.getResources().getDrawable(R.drawable.places1));
         }
         return view;
     }

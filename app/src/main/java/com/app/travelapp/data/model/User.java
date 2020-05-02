@@ -3,6 +3,7 @@ package com.app.travelapp.data.model;
 public class User {
 
     private String userId;
+    private String username;
     private String email;
     private String password;
     private String full_name;
@@ -35,5 +36,13 @@ public class User {
 
     public void setFull_name(String full_name) {
         this.full_name = full_name;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }
