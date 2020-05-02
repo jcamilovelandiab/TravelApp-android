@@ -46,7 +46,7 @@ public class AddViewModel extends ViewModel {
             addFormState.setValue(new AddFormState(null, R.string.invalid_place_description, null, null));
         }else if(!Validator.isStringValid(address)){
             addFormState.setValue(new AddFormState(null, null, R.string.invalid_place_address, null));
-        }else if(picture_path.isEmpty()){
+        }else if(picture_path.trim().isEmpty()){
             addFormState.setValue(new AddFormState(null, null, null, R.string.invalid_place_picture));
         }else{
             addFormState.setValue(new AddFormState(true));
@@ -62,9 +62,10 @@ public class AddViewModel extends ViewModel {
                 address+"", images, author);
         Result result = placeRepository.savePlace(place);
         if(result instanceof  Result.Success){
-
+            String data = (String) ((Result.Success) result).getData();
+            addResult.setValue(new BasicResult(data));
         }else{
-
+            addResult.setValue(new BasicResult(R.string.save_place_failed));
         }
     }
 

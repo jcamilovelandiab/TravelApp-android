@@ -1,13 +1,19 @@
 <resources>
     <string name="app_name">TravelApp</string>
-    <!-- Strings related to errors -->
+    <!-- Strings related to field errors -->
     <string name="invalid_name">Not a valid full name</string>
     <string name="invalid_email">Not a valid email</string>
     <string name="invalid_username">Username must be >5 characters and contain letters or numbers</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="invalid_confirmation_password">Passwords don\'t match</string>
-    <string name="login_failed">"Login failed"</string>
+    <string name="invalid_place_name">Invalid place name</string>
+    <string name="invalid_place_description">Invalid place description</string>
+    <string name="invalid_place_address">Invalid place address</string>
+    <string name="invalid_place_picture">Place must have a picture</string>
+    <!-- Strings related to result errors-->
+    <string name="login_failed">Login failed</string>
     <string name="sign_up_failed">Sign up failed</string>
+    <string name="save_place_failed">Whoops!!!. An error occurred while saving place. Try again</string>
 
     <string name="welcome">Welcome</string>
     <!-- Strings related to fields -->
@@ -27,6 +33,7 @@
     <string name="action_sign_up">Don\'t have an account? Sign up</string>
     <string name="action_sign_up_short">Sign up</string>
     <string name="action_search">Search</string>
+    <string name="action_save">Save</string>
 
 
     <!-- Strings related to view titles -->
@@ -37,10 +44,5 @@
     <string name="title_add">Add</string>
     <string name="title_profile">Profile</string>
     <string name="title_search">Search</string>
-    <string name="action_save">Save</string>
-    <string name="invalid_place_name">Invalid place name</string>
-    <string name="invalid_place_description">Invalid place description</string>
-    <string name="invalid_place_address">Invalid place address</string>
-    <string name="invalid_place_picture">Place must have a picture</string>
 
 </resources>

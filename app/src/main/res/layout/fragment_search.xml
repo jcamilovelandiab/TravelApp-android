@@ -24,7 +24,8 @@
         android:background="@drawable/edit_text_round"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent">
+        app:layout_constraintRight_toRightOf="parent"
+        android:imeOptions="actionSearch">
     </EditText>
 
     <Button
