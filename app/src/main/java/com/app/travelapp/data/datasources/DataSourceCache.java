@@ -129,4 +129,13 @@ public class DataSourceCache {
         }
         return places;
     }
+
+    public Result savePlace(Place place) {
+        try{
+            placesMap.put(place.getPlaceId(), place);
+            return new Result.Success<>("Place was successfully saved");
+        }catch(Exception ex){
+            return new Result.Error(new IOException("Whoops!!!. An error occurred while saving place."));
+        }
+    }
 }

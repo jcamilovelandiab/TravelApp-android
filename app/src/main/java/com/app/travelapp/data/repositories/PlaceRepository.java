@@ -3,6 +3,7 @@ package com.app.travelapp.data.repositories;
 import com.app.travelapp.data.datasources.DataSourceCache;
 import com.app.travelapp.data.datasources.DataSourceFirebase;
 import com.app.travelapp.data.model.Place;
+import com.app.travelapp.utils.Result;
 
 import java.util.List;
 
@@ -31,6 +32,10 @@ public class PlaceRepository {
 
     public List<Place> findByName(String name){
         return dataSourceCache.getPlacesByName(name);
+    }
+
+    public Result savePlace(Place place){
+        return dataSourceCache.savePlace(place);
     }
 
 }

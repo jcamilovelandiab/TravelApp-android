@@ -38,5 +38,9 @@
     <string name="title_profile">Profile</string>
     <string name="title_search">Search</string>
     <string name="action_save">Save</string>
+    <string name="invalid_place_name">Invalid place name</string>
+    <string name="invalid_place_description">Invalid place description</string>
+    <string name="invalid_place_address">Invalid place address</string>
+    <string name="invalid_place_picture">Place must have a picture</string>
 
 </resources>
