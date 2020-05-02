@@ -28,7 +28,7 @@
         android:imeOptions="actionSearch">
     </EditText>
 
-    <Button
+    <!--Button
         android:id="@+id/search_btn_search"
         android:text="@string/action_search"
         android:layout_marginTop="10dp"
@@ -40,9 +40,9 @@
         app:layout_constraintTop_toBottomOf="@id/search_et_search_text"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:textColor="#FFFFFF"/>
+        android:textColor="#FFFFFF"/-->
 
-    <ListView
+    <!--ListView
         android:layout_marginTop="10dp"
         android:id="@+id/search_lv_places"
         android:layout_width="match_parent"
@@ -50,6 +50,16 @@
         android:paddingBottom="175dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/search_btn_search" />
+        app:layout_constraintTop_toBottomOf="@id/search_btn_search" /-->
+
+    <ListView
+        android:layout_marginTop="10dp"
+        android:id="@+id/search_lv_places"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="130dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/search_et_search_text"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

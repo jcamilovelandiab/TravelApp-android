@@ -1,12 +1,15 @@
 package com.app.travelapp.ui.main.search;
 
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -28,7 +31,7 @@ public class SearchFragment extends Fragment {
     private SearchViewModel searchViewModel;
     ListView lv_places;
     EditText et_search_text;
-    Button btn_search;
+    //Button btn_search;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -36,7 +39,7 @@ public class SearchFragment extends Fragment {
                 ViewModelProviders.of(this, new ViewModelFactory(getActivity())).get(SearchViewModel.class);
         View root = inflater.inflate(R.layout.fragment_search, container, false);
         connectModelWithView(root);
-        configureBtnSearch();
+        configureSearch();
         configurePlaceListObserver();
         return root;
     }
@@ -44,11 +47,11 @@ public class SearchFragment extends Fragment {
     private void connectModelWithView(View view){
         lv_places = view.findViewById(R.id.search_lv_places);
         et_search_text = view.findViewById(R.id.search_et_search_text);
-        btn_search = view.findViewById(R.id.search_btn_search);
+        //btn_search = view.findViewById(R.id.search_btn_search);
     }
 
-    private void configureBtnSearch(){
-        btn_search.setOnClickListener(new View.OnClickListener() {
+    private void configureSearch(){
+        /*btn_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(et_search_text.getText().toString().isEmpty()){
@@ -56,6 +59,15 @@ public class SearchFragment extends Fragment {
                 }else{
                     searchViewModel.findPlacesByName(et_search_text.getText().toString());
                 }
+            }
+        });*/
+        et_search_text.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if(actionId == EditorInfo.IME_ACTION_SEARCH){
+                    searchViewModel.findPlacesByName(et_search_text.getText().toString());
+                }
+                return false;
             }
         });
     }
