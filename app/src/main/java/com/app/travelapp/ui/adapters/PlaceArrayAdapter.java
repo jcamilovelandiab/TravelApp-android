@@ -76,4 +76,6 @@ public class PlaceArrayAdapter extends BaseAdapter {
         }
         return view;
     }
+
+
 }

@@ -7,7 +7,6 @@
     tools:context=".ui.main.add.AddFragment">
 
     <ScrollView
-        android:id="@+id/add_sv_scrollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingBottom="?attr/actionBarSize">
@@ -20,9 +19,12 @@
             android:layout_height="wrap_content">
 
             <ImageView
+                android:layout_gravity="center"
                 android:id="@+id/add_iv_place_picture"
                 android:layout_width="wrap_content"
-                android:layout_height="180dp"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:maxHeight="250dp"
                 android:src="@drawable/camera"/>
 
             <com.google.android.material.textfield.TextInputLayout

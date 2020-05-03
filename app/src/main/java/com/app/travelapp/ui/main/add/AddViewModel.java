@@ -69,4 +69,8 @@ public class AddViewModel extends ViewModel {
         }
     }
 
+    public String getUsername(){
+        return userRepository.getLoggedInUser().getUsername();
+    }
+
 }

@@ -1,16 +1,22 @@
 package com.app.travelapp.ui.main.add;
 
+import androidx.core.content.FileProvider;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.os.Environment;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Gravity;
@@ -28,15 +34,21 @@ import com.app.travelapp.R;
 import com.app.travelapp.ui.main.ViewModelFactory;
 import com.app.travelapp.utils.BasicResult;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class AddFragment extends Fragment {
 
     private AddViewModel addViewModel;
-    private ScrollView sv_scrollview;
     private EditText et_place_name, et_place_description, et_place_address;
     private ImageView iv_place_picture;
     private Button btn_save;
 
-    String picture_path="testing", current_picture_path="";
+    String picture_path="", current_picture_path="";
+    Uri picture_uri;
+    private static final int REQUEST_TAKE_PHOTO=1;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -48,7 +60,7 @@ public class AddFragment extends Fragment {
         configureTextWatchers();
         prepareFormStateObserver();
         prepareResultObserver();
-        configureEditTexts();
+        configureTakePicture();
         return root;
     }
 
@@ -58,7 +70,6 @@ public class AddFragment extends Fragment {
         et_place_address = root.findViewById(R.id.add_et_place_address);
         iv_place_picture = root.findViewById(R.id.add_iv_place_picture);
         btn_save = root.findViewById(R.id.add_btn_save);
-        sv_scrollview = root.findViewById(R.id.add_sv_scrollview);
     }
 
     private void configureBtnSave() {
@@ -135,25 +146,6 @@ public class AddFragment extends Fragment {
         et_place_address.addTextChangedListener(textWatcher);
     }
 
-    private void configureEditTexts(){
-        configureEditTextOnFocus(et_place_name);
-        configureEditTextOnFocus(et_place_address);
-        configureEditTextOnFocus(et_place_description);
-    }
-
-    private void configureEditTextOnFocus(final EditText edit_text){
-        edit_text.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus){
-                    int [] XY = new int[2];
-                    edit_text.getLocationOnScreen(XY);
-                    sv_scrollview.scrollTo(XY[0], XY[1]);
-                }
-            }
-        });
-    }
-
     private void showErrorMessage(final String errorMsg, long delayMillis){
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -192,6 +184,57 @@ public class AddFragment extends Fragment {
         et_place_name.setText("");
         et_place_description.setText("");
         et_place_address.setText("");
+        iv_place_picture.setImageDrawable(getResources().getDrawable(R.drawable.camera));
+    }
+
+    private void configureTakePicture(){
+        iv_place_picture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                // It found the activity that generated the picture
+                if(takePicture.resolveActivity(getActivity().getPackageManager())!=null){
+                    File file_picture = null;
+                    try {
+                        file_picture = createImageFile();
+                    } catch (IOException ex){
+                        Toast.makeText(getContext(), "An error was occurred while generating the file", Toast.LENGTH_SHORT).show();
+                    }
+                    //Check that the image file was successfully created
+                    if(file_picture != null){
+                        String authority = getString(R.string.authority_package);
+                        picture_uri = FileProvider.getUriForFile(getContext(),authority+"",file_picture);
+                        takePicture.putExtra(MediaStore.EXTRA_OUTPUT, picture_uri);
+                        startActivityForResult(takePicture,REQUEST_TAKE_PHOTO);
+                    }
+                }
+            }
+        });
+    }
+
+    //Create an image file
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = addViewModel.getUsername()+"_JPEG_" + timeStamp + "_";
+        File storageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+        // Save a file: path for use with ACTION_VIEW intents
+        current_picture_path = image.getAbsolutePath();
+        return image;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == REQUEST_TAKE_PHOTO && resultCode == Activity.RESULT_OK){
+            iv_place_picture.setImageURI(picture_uri);
+            picture_path=current_picture_path;
+            Toast.makeText(getContext(), "Picture was successfully saved in "+ picture_path, Toast.LENGTH_SHORT).show();
+        }
     }
 
 }
