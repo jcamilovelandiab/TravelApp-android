@@ -5,10 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -16,7 +14,7 @@ import androidx.lifecycle.ViewModelProviders;
 import com.app.travelapp.R;
 import com.app.travelapp.data.model.Place;
 import com.app.travelapp.ui.adapters.PlaceArrayAdapter;
-import com.app.travelapp.ui.main.ViewModelFactory;
+import com.app.travelapp.ui.ViewModelFactory;
 
 import java.util.ArrayList;
 import java.util.List;

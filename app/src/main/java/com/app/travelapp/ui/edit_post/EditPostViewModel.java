@@ -20,14 +20,12 @@ import java.util.List;
 public class EditPostViewModel extends ViewModel {
 
     private PlaceRepository placeRepository;
-    private UserRepository userRepository;
     private MutableLiveData<BasicResult> editPostResult = new MutableLiveData<>();
     private MutableLiveData<EditPostFormState> editPostFormState = new MutableLiveData<>();
     private Place place;
 
-    public EditPostViewModel(PlaceRepository placeRepository, UserRepository userRepository) {
+    public EditPostViewModel(PlaceRepository placeRepository) {
         this.placeRepository = placeRepository;
-        this.userRepository = userRepository;
     }
 
     public LiveData<BasicResult> getEditPostResult() {

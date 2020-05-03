@@ -16,6 +16,7 @@
     <string name="sign_up_failed">Sign up failed</string>
     <string name="save_place_failed">Whoops!!!. An error occurred while saving place. Try again</string>
     <string name="update_place_failed">Whoops!!!. An error occurred while updating place. Try again</string>
+    <string name="delete_place_failed">Whoops!!!. An error occurred while deleting place. Try again</string>
 
     <string name="welcome">Welcome</string>
     <!-- Strings related to fields -->
@@ -49,6 +50,7 @@
     <string name="title_profile">Profile</string>
     <string name="title_search">Search</string>
     <string name="action_logout">Logout</string>
+    <string name="title_edit_post">Edit post</string>
 
 
 </resources>

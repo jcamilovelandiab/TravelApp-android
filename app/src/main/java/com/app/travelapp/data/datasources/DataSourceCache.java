@@ -155,4 +155,12 @@ public class DataSourceCache {
         }
     }
 
+    public Result deletePlace(String placeId) {
+        if(placesMap.containsKey(placeId)){
+            placesMap.remove(placeId);
+            return new Result.Success<>("Place was successfully deleted");
+        }else{
+            return new Result.Error(new IOException("Whoops!!!. There is no place registered with the specified id"));
+        }
+    }
 }

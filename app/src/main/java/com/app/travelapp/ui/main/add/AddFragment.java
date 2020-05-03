@@ -26,12 +26,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.travelapp.R;
-import com.app.travelapp.ui.main.ViewModelFactory;
+import com.app.travelapp.ui.ViewModelFactory;
 import com.app.travelapp.utils.BasicResult;
 
 import java.io.File;

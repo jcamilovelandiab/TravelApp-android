@@ -45,4 +45,8 @@ public class PlaceRepository {
     public Result updatePlace(Place place) {
         return dataSourceCache.updatePlace(place);
     }
+
+    public Result delete(String placeId) {
+        return dataSourceCache.deletePlace(placeId);
+    }
 }
