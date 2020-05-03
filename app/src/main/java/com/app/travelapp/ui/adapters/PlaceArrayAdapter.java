@@ -82,11 +82,11 @@ public class PlaceArrayAdapter extends BaseAdapter {
             tv_description.setText(place.getDescription());
             if(place.getImages().size()==0){
                 iv_picture.setImageDrawable(view.getResources().getDrawable(R.drawable.places1));
-            } else {
-                Uri photoUri = cargarImagen(place.getImages().get(0));
-                if (photoUri != null) {
+            }else{
+                Uri photoUri = loadImage(place.getImages().get(0));
+                if(photoUri!=null){
                     iv_picture.setImageURI(photoUri);
-                } else {
+                }else{
                     iv_picture.setImageDrawable(view.getResources().getDrawable(R.drawable.places1));
                 }
             }
@@ -95,14 +95,14 @@ public class PlaceArrayAdapter extends BaseAdapter {
     }
 
     //cargar imagen
-    public Uri cargarImagen(String pathImage){
+    public Uri loadImage(String pathImage){
         try{
             File filePhoto=new File(pathImage);
             String authority = context.getString(R.string.authority_package);
             return FileProvider.getUriForFile(this.context,authority,filePhoto);
         }catch (Exception ex){
-            //Toast.makeText(this.context, "An error occurred while attempting to load an image", Toast.LENGTH_SHORT).show();
-            Log.d("Loading image","Error occurred while attempting to load an image "+pathImage+"\nMessage: "+ex.getMessage()+"\nCause: "+ex.getCause());
+            //Toast.makeText(this.context, "An error occurred while attempting to load the image", Toast.LENGTH_SHORT).show();
+            Log.d("Loading image","Error occurred while attempting to load the image "+pathImage+"\nMessage: "+ex.getMessage()+"\nCause: "+ex.getCause());
             return null;
         }
     }

@@ -23,11 +23,14 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ProcessLifecycleOwner;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.app.travelapp.R;
 import com.app.travelapp.data.model.Place;
 import com.app.travelapp.data.model.User;
-import com.app.travelapp.ui.adapters.PlaceArrayAdapter;
+import com.app.travelapp.ui.adapters.PlaceListRecyclerViewAdapter;
+import com.app.travelapp.ui.adapters.RecyclerViewClickListener;
 import com.app.travelapp.ui.edit_post.EditPostActivity;
 import com.app.travelapp.ui.ViewModelFactory;
 import com.app.travelapp.utils.BasicResult;
@@ -38,9 +41,10 @@ public class ProfileFragment extends Fragment {
 
     private ProfileViewModel profileViewModel;
 
-    TextView et_full_name, et_username, et_email;
-    ImageView iv_picture;
-    ListView lv_places;
+    private TextView et_full_name, et_username, et_email;
+    private ImageView iv_picture;
+    private RecyclerView rv_places;
+    private RecyclerView.Adapter adapter_places;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -50,7 +54,6 @@ public class ProfileFragment extends Fragment {
         connectModelWithView(root);
         prepareUserObserver();
         prepareDeletePlaceResultObserver();
-        configureClickablePlaces();
         return root;
     }
 
@@ -59,7 +62,9 @@ public class ProfileFragment extends Fragment {
         et_username = view.findViewById(R.id.profile_et_username);
         et_email = view.findViewById(R.id.profile_et_email);
         iv_picture = view.findViewById(R.id.profile_iv_picture);
-        lv_places = view.findViewById(R.id.profile_lv_places_posted);
+        rv_places = view.findViewById(R.id.profile_rv_places_posted);
+        rv_places.setHasFixedSize(true);
+        rv_places.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 
     private void prepareUserObserver(){
@@ -74,9 +79,15 @@ public class ProfileFragment extends Fragment {
                 et_full_name.setText(user.getFull_name());
                 et_username.setText(user.getUsername());
                 et_email.setText(user.getEmail());
-                PlaceArrayAdapter placeArrayAdapter = new PlaceArrayAdapter(getActivity(), (ArrayList<Place>) user.getPlaces(), R.color.colorAccent);
-                lv_places.setAdapter(placeArrayAdapter);
-                placeArrayAdapter.notifyDataSetChanged();
+                ArrayList<Place> places = (ArrayList<Place>) user.getPlaces();
+                adapter_places = new PlaceListRecyclerViewAdapter(getActivity(), places, new RecyclerViewClickListener() {
+                    @Override
+                    public void onMorePlaceClicked(Place place) {
+                        configureDialog(place);
+                    }
+                });
+                rv_places.setAdapter(adapter_places);
+                adapter_places.notifyDataSetChanged();
             }
         });
     }
@@ -96,30 +107,25 @@ public class ProfileFragment extends Fragment {
         });
     }
 
-    private void configureClickablePlaces(){
+    private void configureDialog(final Place place){
         final String[] options = {"Edit", "Delete"};
-        lv_places.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
+        alertDialogBuilder.setItems(options, new DialogInterface.OnClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                final Place place = (Place)parent.getAdapter().getItem(position);
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
-                alertDialogBuilder.setItems(options, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        switch (which){
-                            case 0:
-                                editPost(place.getPlaceId());
-                                break;
-                            case 1:
-                                deletePost(place.getPlaceId());
-                                break;
-                        }
-                    }
-                });
-                Dialog dialog = alertDialogBuilder.create();
-                dialog.show();
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which){
+                    case 0:
+                        editPost(place.getPlaceId());
+                        break;
+                    case 1:
+                        deletePost(place.getPlaceId());
+                        break;
+                }
             }
         });
+        Dialog dialog = alertDialogBuilder.create();
+        dialog.show();
+
     }
 
     private void editPost(String placeId){

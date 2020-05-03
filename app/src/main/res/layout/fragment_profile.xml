@@ -7,19 +7,19 @@
     tools:context=".ui.main.profile.ProfileFragment"
     android:background="@color/colorAccent">
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         app:layout_constraintTop_toTopOf="parent"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             >
 
-            <LinearLayout
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -60,20 +60,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
-            </LinearLayout>
+            </androidx.appcompat.widget.LinearLayoutCompat>
 
-            <ListView
-                android:id="@+id/profile_lv_places_posted"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/profile_rv_places_posted"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="vertical"
                 android:paddingBottom="?attr/actionBarSize">
-            </ListView>
+            </androidx.recyclerview.widget.RecyclerView>
 
-        </LinearLayout>
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
-    </ScrollView>
-
-    
-
+    </androidx.core.widget.NestedScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
