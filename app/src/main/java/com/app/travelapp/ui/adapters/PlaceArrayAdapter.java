@@ -1,19 +1,24 @@
 package com.app.travelapp.ui.adapters;
 
 import android.content.Context;
+import android.net.Uri;
 import android.text.Layout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.core.content.FileProvider;
 
 import com.app.travelapp.R;
 import com.app.travelapp.data.model.Place;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class PlaceArrayAdapter extends BaseAdapter {
@@ -72,10 +77,31 @@ public class PlaceArrayAdapter extends BaseAdapter {
             tv_name.setText(place.getName());
             tv_address.setText(place.getAddress());
             tv_description.setText(place.getDescription());
-            iv_picture.setImageDrawable(view.getResources().getDrawable(R.drawable.places1));
+            if(place.getImages().size()==0){
+                iv_picture.setImageDrawable(view.getResources().getDrawable(R.drawable.places1));
+            }else{
+                Uri photoUri = cargarImagen(place.getImages().get(0));
+                if(photoUri!=null){
+                    iv_picture.setImageURI(photoUri);
+                }else{
+                    iv_picture.setImageDrawable(view.getResources().getDrawable(R.drawable.places1));
+                }
+            }
         }
         return view;
     }
 
+    //cargar imagen
+    public Uri cargarImagen(String pathImage){
+        try{
+            File filePhoto=new File(pathImage);
+            String authority = context.getString(R.string.authority_package);
+            return FileProvider.getUriForFile(this.context,authority,filePhoto);
+        }catch (Exception ex){
+            Toast.makeText(this.context, "An error occurred while attempting to load the image", Toast.LENGTH_SHORT).show();
+            Log.d("Loading image","Error occurred while attempting to load the image "+pathImage+"\nMessage: "+ex.getMessage()+"\nCause: "+ex.getCause());
+            return null;
+        }
+    }
 
 }
