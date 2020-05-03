@@ -98,7 +98,7 @@ public class PlaceArrayAdapter extends BaseAdapter {
             String authority = context.getString(R.string.authority_package);
             return FileProvider.getUriForFile(this.context,authority,filePhoto);
         }catch (Exception ex){
-            Toast.makeText(this.context, "An error occurred while attempting to load the image", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this.context, "An error occurred while attempting to load the image", Toast.LENGTH_SHORT).show();
             Log.d("Loading image","Error occurred while attempting to load the image "+pathImage+"\nMessage: "+ex.getMessage()+"\nCause: "+ex.getCause());
             return null;
         }
