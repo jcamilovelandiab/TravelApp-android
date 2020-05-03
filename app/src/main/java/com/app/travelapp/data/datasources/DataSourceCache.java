@@ -138,4 +138,21 @@ public class DataSourceCache {
             return new Result.Error(new IOException("Whoops!!!. An error occurred while saving place."));
         }
     }
+
+    public Place getPlaceById(String placeId){
+        if(placesMap.containsKey(placeId)){
+            return placesMap.get(placeId);
+        }
+        return null;
+    }
+
+    public Result updatePlace(Place place){
+        if(placesMap.containsKey(place.getPlaceId())){
+            placesMap.put(place.getPlaceId(), place);
+            return new Result.Success<>("Place was successfully updated");
+        }else{
+            return new Result.Error(new IOException("Whoops!!!. There is no place registered with the specified id"));
+        }
+    }
+
 }

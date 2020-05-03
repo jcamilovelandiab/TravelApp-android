@@ -30,6 +30,10 @@ public class PlaceRepository {
         return dataSourceCache.getPlaces();
     }
 
+    public Place findById(String placeId){
+        return dataSourceCache.getPlaceById(placeId);
+    }
+
     public List<Place> findByName(String name){
         return dataSourceCache.getPlacesByName(name);
     }
@@ -38,4 +42,7 @@ public class PlaceRepository {
         return dataSourceCache.savePlace(place);
     }
 
+    public Result updatePlace(Place place) {
+        return dataSourceCache.updatePlace(place);
+    }
 }

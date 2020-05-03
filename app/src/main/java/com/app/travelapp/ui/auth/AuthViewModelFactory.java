@@ -26,7 +26,7 @@ public class AuthViewModelFactory implements ViewModelProvider.Factory {
     @Override
     @SuppressWarnings("unchecked")
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-        DataSourceFirebase dataSourceFirebase = new DataSourceFirebase(this.context);
+        DataSourceFirebase dataSourceFirebase = DataSourceFirebase.getInstance(this.context);
         DataSourceCache dataSourceCache = DataSourceCache.getInstance();
         if (modelClass.isAssignableFrom(LoginViewModel.class)) {
             return (T) new LoginViewModel(UserRepository.getInstance(dataSourceCache, dataSourceFirebase));

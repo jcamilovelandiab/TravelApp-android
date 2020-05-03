@@ -22,7 +22,6 @@ public class AddViewModel extends ViewModel {
 
     private PlaceRepository placeRepository;
     private UserRepository userRepository;
-
     private MutableLiveData<BasicResult> addResult = new MutableLiveData<>();
     private MutableLiveData<AddFormState> addFormState = new MutableLiveData<>();
 

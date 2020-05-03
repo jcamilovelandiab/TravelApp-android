@@ -33,7 +33,9 @@
                 android:text="author"
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp">
+                android:layout_marginRight="10dp"
+                android:drawablePadding="10dp"
+                android:drawableRight="@drawable/ic_more_vert_black_24dp">
             </TextView>
 
             <TextView

@@ -1,13 +1,16 @@
 package com.app.travelapp.ui.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.Uri;
 import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -79,11 +82,11 @@ public class PlaceArrayAdapter extends BaseAdapter {
             tv_description.setText(place.getDescription());
             if(place.getImages().size()==0){
                 iv_picture.setImageDrawable(view.getResources().getDrawable(R.drawable.places1));
-            }else{
+            } else {
                 Uri photoUri = cargarImagen(place.getImages().get(0));
-                if(photoUri!=null){
+                if (photoUri != null) {
                     iv_picture.setImageURI(photoUri);
-                }else{
+                } else {
                     iv_picture.setImageDrawable(view.getResources().getDrawable(R.drawable.places1));
                 }
             }

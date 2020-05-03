@@ -18,6 +18,7 @@ import com.app.travelapp.ui.main.search.SearchViewModel;
 public class ViewModelFactory implements ViewModelProvider.Factory {
 
     private Context context;
+    
     public ViewModelFactory(Context context){
         this.context = context;
     }
@@ -25,7 +26,7 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
     @Override
     @SuppressWarnings("unchecked")
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-        DataSourceFirebase dataSourceFirebase = new DataSourceFirebase(this.context);
+        DataSourceFirebase dataSourceFirebase = DataSourceFirebase.getInstance(context);
         DataSourceCache dataSourceCache = DataSourceCache.getInstance();
         if (modelClass.isAssignableFrom(HomeViewModel.class)) {
             return (T) new HomeViewModel(PlaceRepository.getInstance(dataSourceCache, dataSourceFirebase));
