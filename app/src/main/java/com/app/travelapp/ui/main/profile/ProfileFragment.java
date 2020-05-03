@@ -136,6 +136,7 @@ public class ProfileFragment extends Fragment {
 
     private void deletePost(String placeId){
         profileViewModel.deletePost(placeId);
+        profileViewModel.refreshUser();
     }
 
     @Override
