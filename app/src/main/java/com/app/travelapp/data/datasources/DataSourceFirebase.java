@@ -2,10 +2,23 @@ package com.app.travelapp.data.datasources;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
+
+import com.app.travelapp.R;
 import com.app.travelapp.data.model.LoggedInUser;
 import com.app.travelapp.data.model.Place;
 import com.app.travelapp.data.model.User;
+import com.app.travelapp.ui.auth.AuthResult;
+import com.app.travelapp.ui.auth.LoggedInUserView;
+import com.app.travelapp.utils.BasicResult;
 import com.app.travelapp.utils.Result;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.IOException;
@@ -15,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 public class DataSourceFirebase {
+
 
     private static DataSourceFirebase instance;
     private Context context;
@@ -26,6 +40,10 @@ public class DataSourceFirebase {
         this.db = FirebaseFirestore.getInstance();
     }
 
+    private DataSourceFirebase(){
+        this.db = FirebaseFirestore.getInstance();
+    }
+
     public static DataSourceFirebase getInstance(Context context){
         if(instance == null){
             instance = new DataSourceFirebase(context);
@@ -33,37 +51,37 @@ public class DataSourceFirebase {
         return instance;
     }
 
-    // Users
-    public Result<LoggedInUser> login(String email, String password) {
-        try {
-            // TODO: handle loggedInUser authentication
-            /*if(usersMap.containsKey(email) && usersMap.get(email).getPassword().equals(password)){
-                loggedUser = usersMap.get(email);
-                //String first_name = loggedUser.getFull_name().split(" ")[0];
-                LoggedInUser loggedInUser = new LoggedInUser(loggedUser.getUsername()+"",
-                        loggedUser.getEmail()+"", loggedUser.getFull_name()+"");
-                return new Result.Success<>(loggedInUser);
-            }*/
-            return new Result.Error(new IOException("Invalid login"));
-        } catch (Exception e) {
-            return new Result.Error(new IOException("Error logging in", e));
+    public FirebaseFirestore getDatabase(){
+        return this.db;
+    }
+
+    public static DataSourceFirebase getInstance(){
+        if(instance==null){
+            instance = new DataSourceFirebase();
         }
+        return instance;
+    }
+
+    // Users
+    public MutableLiveData<AuthResult> login(final String email, final String password) {
+        // TODO: handle loggedInUser authentication
+        MutableLiveData<AuthResult> authResult = new MutableLiveData<>();
+
+        return authResult;
     }
 
     public Result<LoggedInUser> signUp(User user){
-        /*if(usersMap.containsKey(user.getEmail())){
-            return new Result.Error(new IOException("Email has been already taken!"));
-        }
-        if(checkUsernameAlreadyExists(user.getUsername())){
-            return new Result.Error(new IOException("Username has been already taken!"));
+        //INSERTING DATA INTO FIREBASE
+        if(!saveUser(user)){
+            return new Result.Error(new IOException("An error occurred while the user was signing up"));
         }
         loggedUser = user;
-        usersMap.put(user.getEmail(), user);
-        //String first_name = loggedUser.getFull_name().split(" ")[0];
         LoggedInUser loggedInUser = new LoggedInUser(loggedUser.getUsername()+"",
                 loggedUser.getEmail()+"", loggedUser.getFull_name()+"");
-        return new Result.Success<>(loggedInUser);*/
-        //INSERTING DATA INTO FIREBASE
+        return new Result.Success<>(loggedInUser);
+    }
+
+    private boolean saveUser(User user){
         Map<String, Object> userMp = new HashMap<>();
         userMp.put("email", user.getEmail());
         userMp.put("username", user.getUsername());
@@ -71,13 +89,10 @@ public class DataSourceFirebase {
         userMp.put("full_name",user.getFull_name());
         try{
             db.collection("/Users").document(user.getEmail()).set(userMp);
+            return true;
         }catch(Exception ex){
-            return new Result.Error(new IOException("An error occurred while the user was signing up"));
+            return false;
         }
-        loggedUser = user;
-        LoggedInUser loggedInUser = new LoggedInUser(loggedUser.getUsername()+"",
-                loggedUser.getEmail()+"", loggedUser.getFull_name()+"");
-        return new Result.Success<>(loggedInUser);
     }
 
     private boolean checkUsernameAlreadyExists(String username){

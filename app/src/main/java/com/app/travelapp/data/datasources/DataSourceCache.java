@@ -44,9 +44,9 @@ public class DataSourceCache {
                 "Sopó, Cundinamarca, Colombia",
                 new ArrayList<String>(), user);
         placesMap = new HashMap<>();
-        placesMap.put(place.getPlaceId(), place);
+        //placesMap.put(place.getPlaceId(), place);
         placesMap.put(place2.getPlaceId(), place2);
-        placesMap.put(place3.getPlaceId(), place3);
+        //placesMap.put(place3.getPlaceId(), place3);
         System.out.println(placesMap.size());
     }
 

@@ -1,7 +1,12 @@
 package com.app.travelapp.data.repositories;
 
+import android.util.Log;
+
+import androidx.lifecycle.MutableLiveData;
+
 import com.app.travelapp.data.model.Place;
 import com.app.travelapp.data.model.User;
+import com.app.travelapp.ui.auth.AuthResult;
 import com.app.travelapp.utils.Result;
 import com.app.travelapp.data.datasources.DataSourceCache;
 import com.app.travelapp.data.datasources.DataSourceFirebase;
@@ -50,7 +55,7 @@ public class UserRepository {
         return user;
     }
 
-    private void setLoggedInUser(LoggedInUser user) {
+    public void setLoggedInUser(LoggedInUser user) {
         this.user = user;
         // If user credentials will be cached in local storage, it is recommended it be encrypted
         // @see https://developer.android.com/training/articles/keystore
@@ -58,10 +63,12 @@ public class UserRepository {
 
     public Result<LoggedInUser> login(String email, String password) {
         // handle login
+        // FOR CACHE
         Result<LoggedInUser> result = dataSourceCache.login(email, password);
         if (result instanceof Result.Success) {
             setLoggedInUser(((Result.Success<LoggedInUser>) result).getData());
         }
+        //return dataSourceFirebase.login(email, password);
         return result;
     }
 

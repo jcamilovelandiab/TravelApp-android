@@ -52,6 +52,8 @@
     <string name="action_logout">Logout</string>
     <string name="title_edit_post">Edit post</string>
     <string name="title_activity_maps">Map</string>
+    <string name="user_not_found">User not found</string>
+    <string name="preference_file_key">preference file key</string>
 
 
 </resources>

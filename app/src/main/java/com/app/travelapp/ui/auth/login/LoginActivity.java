@@ -63,42 +63,31 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void configureLoginFormStateObserver() {
-        loginViewModel.getLoginFormState().observe(this, new Observer<LoginFormState>() {
-            @Override
-            public void onChanged(@Nullable LoginFormState loginFormState) {
-                if (loginFormState == null) {
-                    return;
-                }
+        loginViewModel.getLoginFormState().observe(this, loginFormState -> {
+            if(loginFormState!=null){
                 loginButton.setEnabled(loginFormState.isDataValid());
                 if (loginFormState.getUsernameError() != null) {
                     usernameEditText.setError(getString(loginFormState.getUsernameError()));
                 }
-
                 if (loginFormState.getPasswordError() != null) {
                     passwordEditText.setError(getString(loginFormState.getPasswordError()));
                 }
-
             }
         });
     }
 
     private void configureLoginResultObserver(){
-        loginViewModel.getLoginResult().observe(this, new Observer<AuthResult>() {
-            @Override
-            public void onChanged(@Nullable AuthResult loginResult) {
-                if (loginResult == null) {
-                    return;
-                }
-                loadingProgressBar.setVisibility(View.GONE);
-                if (loginResult.getError() != null) {
-                    showLoginFailed(loginResult.getError());
-                }
-                if (loginResult.getSuccess() != null) {
-                    updateUiWithUser(loginResult.getSuccess());
-                    setResult(Activity.RESULT_OK);
-                    //Complete and destroy login activity once successful
-                    finish();
-                }
+        loginViewModel.getLoginResult().observe(this, loginResult -> {
+            if(loginResult==null) return;
+            loadingProgressBar.setVisibility(View.GONE);
+            if (loginResult.getError() != null) {
+                showLoginFailed(loginResult.getError());
+            }
+            if (loginResult.getSuccess() != null) {
+                updateUiWithUser(loginResult.getSuccess());
+                setResult(Activity.RESULT_OK);
+                //Complete and destroy login activity once successful
+                finish();
             }
         });
     }
@@ -140,8 +129,14 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 loadingProgressBar.setVisibility(View.VISIBLE);
-                loginViewModel.login(usernameEditText.getText().toString(),
-                        passwordEditText.getText().toString());
+                Thread thread = new Thread(){
+                    @Override
+                    public void run(){
+                        loginViewModel.login(usernameEditText.getText().toString(),
+                                passwordEditText.getText().toString());
+                    }
+                };
+                thread.start();
             }
         });
     }
