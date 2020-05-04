@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.app.travelapp.R;
+import com.app.travelapp.data.datasources.Session;
 import com.app.travelapp.data.model.LoggedInUser;
 import com.app.travelapp.data.model.Place;
 import com.app.travelapp.data.model.User;
@@ -37,7 +38,7 @@ public class ProfileViewModel extends ViewModel {
     }
 
     private void retrieveUserInformation(){
-        LoggedInUser loggedInUser = userRepository.getLoggedInUser();
+        LoggedInUser loggedInUser = Session.getLoggedInUser();
         User loggedUser = new User(loggedInUser.getUsername()+"",loggedInUser.getEmail()+"", loggedInUser.getFull_name()+"");
         List<Place> places = userRepository.getPlacesFromUser(loggedUser);
         loggedUser.setPlaces(places);

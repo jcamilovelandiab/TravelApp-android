@@ -19,6 +19,7 @@ import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -125,32 +126,21 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void configureLoginButton(){
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadingProgressBar.setVisibility(View.VISIBLE);
-                Thread thread = new Thread(){
-                    @Override
-                    public void run(){
-                        loginViewModel.login(usernameEditText.getText().toString(),
-                                passwordEditText.getText().toString());
-                    }
-                };
-                thread.start();
-            }
+        loginButton.setOnClickListener(v -> {
+            loadingProgressBar.setVisibility(View.VISIBLE);
+            hideKeyboard(this);
+            runOnUiThread(() -> loginViewModel.login(usernameEditText.getText().toString(),
+                    passwordEditText.getText().toString()));
         });
     }
 
     private void configureSignUpButton(){
-        signUpButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
-                startActivity(intent);
-                setResult(Activity.RESULT_OK);
-                //Complete and destroy login activity once successful
-                finish();
-            }
+        signUpButton.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
+            startActivity(intent);
+            setResult(Activity.RESULT_OK);
+            //Complete and destroy login activity once successful
+            finish();
         });
     }
 
@@ -178,6 +168,17 @@ public class LoginActivity extends AppCompatActivity {
                 toast.show();
             }
         });
-
     }
+
+    public static void hideKeyboard(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        //Find the currently focused view, so we can grab the correct window token from it.
+        View view = activity.getCurrentFocus();
+        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        if (view == null) {
+            view = new View(activity);
+        }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
 }

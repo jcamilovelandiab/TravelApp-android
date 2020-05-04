@@ -8,10 +8,13 @@ import com.app.travelapp.data.datasources.Session;
 import com.app.travelapp.data.model.Place;
 import com.app.travelapp.data.model.User;
 import com.app.travelapp.ui.auth.AuthResult;
+import com.app.travelapp.ui.auth.LoggedInUserView;
 import com.app.travelapp.utils.Result;
 import com.app.travelapp.data.datasources.DataSourceCache;
 import com.app.travelapp.data.datasources.DataSourceFirebase;
 import com.app.travelapp.data.model.LoggedInUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.List;
 
@@ -46,21 +49,28 @@ public class UserRepository {
         Result<LoggedInUser> result = dataSourceCache.login(email, password);
         if (result instanceof Result.Success) {
             LoggedInUser loggedInUser = ((Result.Success<LoggedInUser>) result).getData();
-            Session.setLoggedUser(loggedInUser);
+            Session.setLoggedInUser(loggedInUser);
         }
         //return dataSourceFirebase.login(email, password);
         return result;
     }
 
+    public void login(String email, String password, MutableLiveData<AuthResult> loginResult){
+        dataSourceFirebase.login(email, password, loginResult);
+    }
+
     public Result<LoggedInUser> signUp(User user){
-        //Result<LoggedInUser> result = dataSourceCache.signUp(user);
-        Result<LoggedInUser> result = dataSourceFirebase.signUp(user);
+        Result<LoggedInUser> result = dataSourceCache.signUp(user);
         if(result instanceof Result.Success){
             // the user could signed up and logged in successfully
             LoggedInUser loggedInUser = ((Result.Success<LoggedInUser>) result).getData();
-            Session.setLoggedUser(loggedInUser);
+            Session.setLoggedInUser(loggedInUser);
         }
         return result;
+    }
+
+    public void signUp(User user, MutableLiveData<AuthResult> signUpResult){
+        dataSourceFirebase.signUp(user, signUpResult);
     }
 
     public List<Place> getPlacesFromUser(User user){

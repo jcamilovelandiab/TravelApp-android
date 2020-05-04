@@ -37,8 +37,7 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
             return (T) new ProfileViewModel(UserRepository.getInstance(dataSourceCache, dataSourceFirebase),
                     PlaceRepository.getInstance(dataSourceCache, dataSourceFirebase));
         } else if(modelClass.isAssignableFrom(AddViewModel.class)){
-            return (T) new AddViewModel(PlaceRepository.getInstance(dataSourceCache, dataSourceFirebase),
-                    UserRepository.getInstance(dataSourceCache, dataSourceFirebase));
+            return (T) new AddViewModel(PlaceRepository.getInstance(dataSourceCache, dataSourceFirebase));
         } else if(modelClass.isAssignableFrom(EditPostViewModel.class)){
             return (T) new EditPostViewModel(PlaceRepository.getInstance(dataSourceCache, dataSourceFirebase));
         } else {

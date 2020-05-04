@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import com.app.travelapp.R;
 import com.app.travelapp.data.datasources.DataSourceCache;
 import com.app.travelapp.data.datasources.DataSourceFirebase;
+import com.app.travelapp.data.datasources.Session;
 import com.app.travelapp.data.repositories.UserRepository;
 import com.app.travelapp.ui.auth.login.LoginActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -51,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.main_menu_action_logout:
                 setResult(Activity.RESULT_OK);
                 finish();
-                UserRepository.getInstance(DataSourceCache.getInstance(), DataSourceFirebase.getInstance(getApplicationContext())).logout();
+                Session.logout();
                 Intent intent = new Intent(this, LoginActivity.class);
                 startActivity(intent);
                 break;

@@ -49,14 +49,7 @@ public class SignUpViewModel extends ViewModel {
 
     public void signUp(String full_name, String username,  String email, String password){
         User user = new User(username+"",email+"", password+"", full_name+"");
-        Result<LoggedInUser> result = userRepository.signUp(user);
-        if(result instanceof Result.Success){
-            LoggedInUser loggedInUser = ((Result.Success<LoggedInUser>) result).getData();
-            signUpResult.setValue(new AuthResult(new LoggedInUserView(loggedInUser.getFull_name())));
-        }else{
-            Result.Error error = (Result.Error) result;
-            signUpResult.setValue(new AuthResult(error.getError().getMessage()));
-        }
+        userRepository.signUp(user, signUpResult);
     }
 
 }

@@ -12,18 +12,23 @@ public class Session {
 
     private final String TOKEN_KEY = "TOKEN_KEY";
     //private final SharedPreferences sharedPreferences;
-    private static LoggedInUser loggedUser;
+    private static LoggedInUser loggedInUser;
 
     /*public Session(Context context ){
         this.sharedPreferences =
                 context.getSharedPreferences( context.getString(R.string.preference_file_key), Context.MODE_PRIVATE );
     }*/
 
-    public static LoggedInUser getLoggedUser() {
-        return loggedUser;
+
+    public static LoggedInUser getLoggedInUser() {
+        return loggedInUser;
     }
 
-    public static void setLoggedUser(LoggedInUser loggedUser) {
-        Session.loggedUser = loggedUser;
+    public static void setLoggedInUser(LoggedInUser loggedInUser) {
+        Session.loggedInUser = loggedInUser;
+    }
+
+    public static void logout() {
+        loggedInUser = null;
     }
 }

@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.app.travelapp.R;
+import com.app.travelapp.data.datasources.Session;
 import com.app.travelapp.data.model.LoggedInUser;
 import com.app.travelapp.data.model.Place;
 import com.app.travelapp.data.model.User;
@@ -21,13 +22,11 @@ import java.util.UUID;
 public class AddViewModel extends ViewModel {
 
     private PlaceRepository placeRepository;
-    private UserRepository userRepository;
     private MutableLiveData<BasicResult> addResult = new MutableLiveData<>();
     private MutableLiveData<AddFormState> addFormState = new MutableLiveData<>();
 
-    public AddViewModel(PlaceRepository placeRepository, UserRepository userRepository) {
+    public AddViewModel(PlaceRepository placeRepository) {
         this.placeRepository = placeRepository;
-        this.userRepository = userRepository;
     }
 
     public LiveData<BasicResult> getAddResult() {
@@ -54,7 +53,7 @@ public class AddViewModel extends ViewModel {
 
     public void addPlace(String name, String description, String address, String picture_path){
         List<String> images = new ArrayList<>(); images.add(picture_path);
-        LoggedInUser loggedInUser = userRepository.getLoggedInUser();
+        LoggedInUser loggedInUser = Session.getLoggedInUser();
         User author = new User(loggedInUser.getUsername()+"", loggedInUser.getEmail()+"", loggedInUser.getFull_name()+"");
         Place place = new Place(UUID.randomUUID().toString()+"",
                 name+"", description+"",
@@ -69,7 +68,7 @@ public class AddViewModel extends ViewModel {
     }
 
     public String getUsername(){
-        return userRepository.getLoggedInUser().getUsername();
+        return Session.getLoggedInUser().getUsername();
     }
 
 }

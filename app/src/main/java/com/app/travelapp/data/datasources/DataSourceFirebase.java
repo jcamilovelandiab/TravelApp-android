@@ -33,7 +33,6 @@ public class DataSourceFirebase {
     private static DataSourceFirebase instance;
     private Context context;
     FirebaseFirestore db;
-    User loggedUser;
 
     private DataSourceFirebase(Context context){
         this.context = context;
@@ -63,25 +62,38 @@ public class DataSourceFirebase {
     }
 
     // Users
-    public MutableLiveData<AuthResult> login(final String email, final String password) {
+    public void login(String email,String password, MutableLiveData<AuthResult> loginResult) {
         // TODO: handle loggedInUser authentication
         MutableLiveData<AuthResult> authResult = new MutableLiveData<>();
-
-        return authResult;
+        DocumentReference docRef = DataSourceFirebase.getInstance().getDatabase().collection("/Users").document(email);
+        docRef.get().addOnCompleteListener( task ->{
+            if(task.isSuccessful()){
+                DocumentSnapshot document = task.getResult();
+                if(document.exists()){
+                    String email_query, username_query, password_query, full_name_query;
+                    email_query = document.getString("email");
+                    username_query = document.getString("username");
+                    password_query = document.getString("password");
+                    full_name_query = document.getString("full_name");
+                    User user = new User(username_query+"", email_query+"",password_query+"",full_name_query+"");
+                    if(user.getPassword().equals(password)){
+                        LoggedInUser loggedInUser = new LoggedInUser(username_query+"", email_query+"", full_name_query+"");
+                        Session.setLoggedInUser(loggedInUser);
+                        loginResult.setValue(new AuthResult(new LoggedInUserView(loggedInUser.getFull_name())));
+                    }else{
+                        loginResult.setValue(new AuthResult("Invalid login"));
+                    }
+                }else{
+                    loginResult.setValue(new AuthResult("Invalid login"));
+                }
+            }else{
+                loginResult.setValue(new AuthResult("Error in logging in"));
+            }
+        });
     }
 
-    public Result<LoggedInUser> signUp(User user){
+    public void signUp(User user, MutableLiveData<AuthResult> signUpResult){
         //INSERTING DATA INTO FIREBASE
-        if(!saveUser(user)){
-            return new Result.Error(new IOException("An error occurred while the user was signing up"));
-        }
-        loggedUser = user;
-        LoggedInUser loggedInUser = new LoggedInUser(loggedUser.getUsername()+"",
-                loggedUser.getEmail()+"", loggedUser.getFull_name()+"");
-        return new Result.Success<>(loggedInUser);
-    }
-
-    private boolean saveUser(User user){
         Map<String, Object> userMp = new HashMap<>();
         userMp.put("email", user.getEmail());
         userMp.put("username", user.getUsername());
@@ -89,9 +101,12 @@ public class DataSourceFirebase {
         userMp.put("full_name",user.getFull_name());
         try{
             db.collection("/Users").document(user.getEmail()).set(userMp);
-            return true;
+            LoggedInUser loggedInUser = new LoggedInUser(user.getUsername()+"",
+                    user.getEmail()+"", user.getFull_name()+"");
+            Session.setLoggedInUser(loggedInUser);
+            signUpResult.setValue(new AuthResult(new LoggedInUserView(user.getFull_name())));
         }catch(Exception ex){
-            return false;
+            signUpResult.setValue(new AuthResult("An error occurred while the user was signing up"));
         }
     }
 
