@@ -18,6 +18,9 @@ public class User {
         this.full_name = full_name;
     }
 
+    public User(){
+    }
+
     public User(String username, String email, String full_name) {
         this.username = username;
         this.email = email;

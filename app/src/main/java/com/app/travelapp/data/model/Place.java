@@ -20,6 +20,9 @@ public class Place {
         this.author = author;
     }
 
+    public Place(){
+    }
+
     public String getName() {
         return name;
     }

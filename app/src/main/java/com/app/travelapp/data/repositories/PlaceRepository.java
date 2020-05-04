@@ -60,4 +60,9 @@ public class PlaceRepository {
     public Result delete(String placeId) {
         return dataSourceCache.deletePlace(placeId);
     }
+
+    public void delete(String placeId, MutableLiveData<BasicResult> deletePlaceResult){
+        dataSourceFirebase.deletePlace(placeId, deletePlaceResult);
+    }
+
 }

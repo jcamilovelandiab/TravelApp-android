@@ -77,4 +77,8 @@ public class UserRepository {
         return dataSourceCache.getPlacesFromUser(user);
     }
 
+    public void getPlacesFromUser(User user, MutableLiveData<List<Place>> placesQuery){
+        dataSourceFirebase.getPlacesFromUser(user, placesQuery);
+    }
+
 }

@@ -12,9 +12,8 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,8 +33,7 @@ import com.app.travelapp.ui.adapters.RecyclerViewClickListener;
 import com.app.travelapp.ui.edit_post.EditPostActivity;
 import com.app.travelapp.ui.ViewModelFactory;
 import com.app.travelapp.utils.BasicResult;
-
-import java.util.ArrayList;
+import java.util.List;
 
 public class ProfileFragment extends Fragment {
 
@@ -45,6 +43,7 @@ public class ProfileFragment extends Fragment {
     private ImageView iv_picture;
     private RecyclerView rv_places;
     private RecyclerView.Adapter adapter_places;
+    private ProgressBar pg_loading;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -54,6 +53,7 @@ public class ProfileFragment extends Fragment {
         connectModelWithView(root);
         prepareUserObserver();
         prepareDeletePlaceResultObserver();
+        preparePlacesFromUserObserver();
         return root;
     }
 
@@ -65,6 +65,7 @@ public class ProfileFragment extends Fragment {
         rv_places = view.findViewById(R.id.profile_rv_places_posted);
         rv_places.setHasFixedSize(true);
         rv_places.setLayoutManager(new LinearLayoutManager(getActivity()));
+        pg_loading = view.findViewById(R.id.profile_pg_loading);
     }
 
     private void prepareUserObserver(){
@@ -72,14 +73,22 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onChanged(User user) {
                 if(user==null) return;
-                if(user.getEmail()==null || user.getUsername()==null || user.getFull_name()==null || user.getPlaces()==null){
+                if(user.getEmail()==null || user.getUsername()==null || user.getFull_name()==null){
                     Toast.makeText(getActivity(), "Whoops!!!. An error occurred trying to retrieve user information", Toast.LENGTH_LONG).show();
                     return;
                 }
                 et_full_name.setText(user.getFull_name());
                 et_username.setText(user.getUsername());
                 et_email.setText(user.getEmail());
-                ArrayList<Place> places = (ArrayList<Place>) user.getPlaces();
+            }
+        });
+    }
+
+    private void preparePlacesFromUserObserver(){
+        profileViewModel.getPlaces().observe(getViewLifecycleOwner(), new Observer<List<Place>>() {
+            @Override
+            public void onChanged(List<Place> places) {
+                if(places==null) return;
                 adapter_places = new PlaceListRecyclerViewAdapter(getActivity(), places, new RecyclerViewClickListener() {
                     @Override
                     public void onMorePlaceClicked(Place place) {
@@ -88,6 +97,7 @@ public class ProfileFragment extends Fragment {
                 });
                 rv_places.setAdapter(adapter_places);
                 adapter_places.notifyDataSetChanged();
+                pg_loading.setVisibility(View.GONE);
             }
         });
     }
@@ -125,7 +135,6 @@ public class ProfileFragment extends Fragment {
         });
         Dialog dialog = alertDialogBuilder.create();
         dialog.show();
-
     }
 
     private void editPost(String placeId){
@@ -135,6 +144,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void deletePost(String placeId){
+        pg_loading.setVisibility(View.VISIBLE);
         profileViewModel.deletePost(placeId);
         profileViewModel.refreshUser();
     }

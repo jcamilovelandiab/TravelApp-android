@@ -16,8 +16,7 @@ public class HomeViewModel extends ViewModel {
 
     public HomeViewModel(PlaceRepository placeRepository) {
         this.placeRepository = placeRepository;
-        List<Place> places = placeRepository.findAll();
-        placeList.setValue(places);
+        placeRepository.findAll(placeList);
     }
 
     public LiveData<List<Place>> getPlaces() {

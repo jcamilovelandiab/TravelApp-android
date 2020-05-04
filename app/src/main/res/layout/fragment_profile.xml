@@ -70,6 +70,23 @@
                 android:paddingBottom="?attr/actionBarSize">
             </androidx.recyclerview.widget.RecyclerView>
 
+            <ProgressBar
+                android:id="@+id/profile_pg_loading"
+                app:layout_constraintTop_toBottomOf="@id/home_lv_places"
+                android:layout_width="match_parent"
+                android:foregroundGravity="center_horizontal"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                android:gravity="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:indeterminate="true"
+                android:indeterminateTintMode="src_atop"
+                android:indeterminateTint="#FFFFFF">
+            </ProgressBar>
+
         </androidx.appcompat.widget.LinearLayoutCompat>
 
     </androidx.core.widget.NestedScrollView>

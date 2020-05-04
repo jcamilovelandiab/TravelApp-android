@@ -91,7 +91,7 @@
                 android:background="@drawable/button_round"
                 android:textColor="#FFFFFF"/>
 
-            <androidx.core.widget.ContentLoadingProgressBar
+            <ProgressBar
                 android:id="@+id/add_pg_loading"
                 app:layout_constraintTop_toBottomOf="@id/home_lv_places"
                 android:layout_width="match_parent"
@@ -101,7 +101,7 @@
                 android:layout_marginEnd="32dp"
                 android:layout_marginBottom="32dp"
                 android:visibility="gone">
-            </androidx.core.widget.ContentLoadingProgressBar>
+            </ProgressBar>
 
         </LinearLayout>
 

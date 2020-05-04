@@ -20,9 +20,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -135,9 +137,42 @@ public class DataSourceFirebase {
                 if (task.isSuccessful()) {
                     List<Place> placeList = new ArrayList<>();
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        placeList.add(document.toObject(Place.class));
+                        Place place = documentToPlace(document);
+                        //if(place.getAuthor().getEmail().equals(Session.getLoggedInUser().getEmail())) continue;
+                        placeList.add(place);
                     }
+                    placesQuery.setValue(placeList);
+                } else {
+                    Log.d("Error", "Error getting documents: ", task.getException());
+                }
+            }
+        });
+    }
 
+    private Place documentToPlace(QueryDocumentSnapshot document){
+        Place place = document.toObject(Place.class);
+        HashMap<String, Object> authorHashMap = (HashMap<String, Object>) document.get("author");
+        User author = new User(authorHashMap.get("username")+"",
+                authorHashMap.get("email")+"",
+                authorHashMap.get("full_name")+"");
+        place.setAuthor(author);
+        place.setPlaceId(document.getId());
+        return place;
+    }
+
+    public void getPlacesFromUser(User user, MutableLiveData<List<Place>> placesQuery){
+        db.collection("/Places").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    List<Place> placeList = new ArrayList<>();
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        Place place = documentToPlace(document);
+                        if(place.getAuthor().getEmail().equals(Session.getLoggedInUser().getEmail())){
+                            placeList.add(place);
+                        }
+                    }
+                    placesQuery.setValue(placeList);
                 } else {
                     Log.d("Error", "Error getting documents: ", task.getException());
                 }
@@ -220,14 +255,18 @@ public class DataSourceFirebase {
         return null;
     }
 
-    public Result deletePlace(String placeId) {
-        /*if(placesMap.containsKey(placeId)){
-            placesMap.remove(placeId);
-            return new Result.Success<>("Place was successfully deleted");
-        }else{
-            return new Result.Error(new IOException("Whoops!!!. There is no place registered with the specified id"));
-        }*/
-        return null;
+    public void deletePlace(String placeId, MutableLiveData<BasicResult> deletePlaceResult) {
+        db.collection("/Places").document(placeId).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                deletePlaceResult.setValue(new BasicResult("Place was deleted successfully!"));
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                deletePlaceResult.setValue(new BasicResult(R.string.delete_place_failed));
+            }
+        });
     }
 
 }

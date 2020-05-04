@@ -21,6 +21,7 @@ public class ProfileViewModel extends ViewModel {
     private UserRepository userRepository;
     private PlaceRepository placeRepository;
     private MutableLiveData<User> user = new MutableLiveData<>();
+    private MutableLiveData<List<Place>> places = new MutableLiveData<>();
     private MutableLiveData<BasicResult> deletePlaceResult = new MutableLiveData<>();
 
     public ProfileViewModel(UserRepository userRepository, PlaceRepository placeRepository) {
@@ -32,6 +33,9 @@ public class ProfileViewModel extends ViewModel {
     public LiveData<User> getUser() {
         return user;
     }
+    public LiveData<List<Place>> getPlaces(){
+        return places;
+    }
 
     public LiveData<BasicResult> getPostDeleteResult() {
         return deletePlaceResult;
@@ -40,9 +44,8 @@ public class ProfileViewModel extends ViewModel {
     private void retrieveUserInformation(){
         LoggedInUser loggedInUser = Session.getLoggedInUser();
         User loggedUser = new User(loggedInUser.getUsername()+"",loggedInUser.getEmail()+"", loggedInUser.getFull_name()+"");
-        List<Place> places = userRepository.getPlacesFromUser(loggedUser);
-        loggedUser.setPlaces(places);
         user.setValue(loggedUser);
+        userRepository.getPlacesFromUser(loggedUser, places);
     }
 
     public void refreshUser(){
@@ -50,13 +53,7 @@ public class ProfileViewModel extends ViewModel {
     }
 
     public void deletePost(String placeId){
-        Result result = placeRepository.delete(placeId);
-        if(result instanceof Result.Success){
-            String data = (String) ((Result.Success) result).getData();
-            deletePlaceResult.setValue(new BasicResult(data));
-        }else{
-            deletePlaceResult.setValue(new BasicResult(R.string.delete_place_failed));
-        }
+        placeRepository.delete(placeId, deletePlaceResult);
     }
 
 }
