@@ -56,7 +56,7 @@ public class SignUpViewModel extends ViewModel {
     }
 
     public void signUp(String full_name, String username,  String email, String password){
-        User user = new User(username,full_name, email, password);
+        User user = new User(username+"",email+"", password+"", full_name+"");
         Result<LoggedInUser> result = userRepository.signUp(user);
         if(result instanceof Result.Success){
             LoggedInUser loggedInUser = ((Result.Success<LoggedInUser>) result).getData();

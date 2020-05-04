@@ -66,7 +66,8 @@ public class UserRepository {
     }
 
     public Result<LoggedInUser> signUp(User user){
-        Result<LoggedInUser> result = dataSourceCache.signUp(user);
+        //Result<LoggedInUser> result = dataSourceCache.signUp(user);
+        Result<LoggedInUser> result = dataSourceFirebase.signUp(user);
         if(result instanceof Result.Success){
             // the user could signed up and logged in successfully
             setLoggedInUser(((Result.Success<LoggedInUser>) result).getData());

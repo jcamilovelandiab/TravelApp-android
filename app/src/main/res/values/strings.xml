@@ -51,6 +51,7 @@
     <string name="title_search">Search</string>
     <string name="action_logout">Logout</string>
     <string name="title_edit_post">Edit post</string>
+    <string name="title_activity_maps">Map</string>
 
 
 </resources>
