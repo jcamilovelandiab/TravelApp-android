@@ -1,6 +1,7 @@
 package com.app.travelapp.data.datasources;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
@@ -16,10 +17,14 @@ import com.app.travelapp.ui.auth.LoggedInUserView;
 import com.app.travelapp.utils.BasicResult;
 import com.app.travelapp.utils.Result;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -123,12 +128,21 @@ public class DataSourceFirebase {
         // TODO: revoke authentication
     }
 
-    public List<Place> getPlaces(){
-        List<Place> places = new ArrayList<>();
-        /*for (Map.Entry<String, Place> entry: placesMap.entrySet()){
-            places.add(entry.getValue());
-        }*/
-        return places;
+    public void getPlaces(MutableLiveData<List<Place>> placesQuery){
+        db.collection("/Places").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    List<Place> placeList = new ArrayList<>();
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        placeList.add(document.toObject(Place.class));
+                    }
+
+                } else {
+                    Log.d("Error", "Error getting documents: ", task.getException());
+                }
+            }
+        });
     }
 
     public List<Place> getPlacesByName(String name){
@@ -158,6 +172,35 @@ public class DataSourceFirebase {
         }catch(Exception ex){
             return new Result.Error(new IOException("Whoops!!!. An error occurred while saving place."));
         }
+    }
+
+    public void savePlace(Place place, MutableLiveData<BasicResult> addResult){
+        //
+        Map<String, Object> placeData = new HashMap<>();
+        placeData.put("name", place.getName());
+        placeData.put("description", place.getDescription());
+        placeData.put("address", place.getAddress());
+        placeData.put("images", place.getImages());
+        Map<String, Object> authorData = new HashMap<>();
+        authorData.put("email", place.getAuthor().getEmail());
+        authorData.put("username", place.getAuthor().getUsername());
+        authorData.put("full_name", place.getAuthor().getFull_name());
+        placeData.put("author", authorData);
+        db.collection("Places").document().set(placeData)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        addResult.setValue(new BasicResult("Place was successfully saved"));
+                        Log.d("Place saved", "DocumentSnapshot successfully written!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        addResult.setValue(new BasicResult(R.string.save_place_failed));
+                        Log.w("Error saving place", "Error writing document", e);
+                    }
+                });
     }
 
     public Place getPlaceById(String placeId){

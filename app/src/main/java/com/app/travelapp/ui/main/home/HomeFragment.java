@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -23,6 +24,7 @@ public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
     ListView lv_places;
+    ProgressBar pg_loading;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -30,18 +32,17 @@ public class HomeFragment extends Fragment {
                 ViewModelProviders.of(this, new ViewModelFactory(getActivity())).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
         lv_places = root.findViewById(R.id.home_lv_places);
+        pg_loading = root.findViewById(R.id.home_pg_loading);
         configurePlaceListObserver();
         return root;
     }
 
     private void configurePlaceListObserver(){
-        homeViewModel.getPlaces().observe(getViewLifecycleOwner(), new Observer<List<Place>>() {
-            @Override
-            public void onChanged(List<Place> places) {
-                PlaceArrayAdapter adapter = new PlaceArrayAdapter(getActivity(), (ArrayList) places);
-                lv_places.setAdapter(adapter);
-                adapter.notifyDataSetChanged();
-            }
+        homeViewModel.getPlaces().observe(getViewLifecycleOwner(), places -> {
+            pg_loading.setVisibility(View.GONE);
+            PlaceArrayAdapter adapter = new PlaceArrayAdapter(getActivity(), (ArrayList) places);
+            lv_places.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
         });
     }
 

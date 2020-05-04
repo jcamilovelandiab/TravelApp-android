@@ -26,6 +26,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,6 +49,7 @@ public class AddFragment extends Fragment {
     String picture_path="", current_picture_path="";
     Uri picture_uri;
     private static final int REQUEST_TAKE_PHOTO=1;
+    ProgressBar pg_loading;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -69,12 +71,14 @@ public class AddFragment extends Fragment {
         et_place_address = root.findViewById(R.id.add_et_place_address);
         iv_place_picture = root.findViewById(R.id.add_iv_place_picture);
         btn_save = root.findViewById(R.id.add_btn_save);
+        pg_loading = root.findViewById(R.id.add_pg_loading);
     }
 
     private void configureBtnSave() {
         btn_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                pg_loading.setVisibility(View.VISIBLE);
                 addViewModel.addPlace(et_place_name.getText().toString()+"",
                         et_place_description.getText().toString()+"",
                         et_place_address.getText().toString()+"",
@@ -111,6 +115,7 @@ public class AddFragment extends Fragment {
             @Override
             public void onChanged(BasicResult basicResult) {
                 if(basicResult==null) return;
+                pg_loading.setVisibility(View.GONE);
                 if(basicResult.getError()!=null){
                     showErrorMessage(getString(basicResult.getError()),0);
                 }

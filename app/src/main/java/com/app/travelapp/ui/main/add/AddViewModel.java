@@ -58,13 +58,7 @@ public class AddViewModel extends ViewModel {
         Place place = new Place(UUID.randomUUID().toString()+"",
                 name+"", description+"",
                 address+"", images, author);
-        Result result = placeRepository.savePlace(place);
-        if(result instanceof  Result.Success){
-            String data = (String) ((Result.Success) result).getData();
-            addResult.setValue(new BasicResult(data));
-        }else{
-            addResult.setValue(new BasicResult(R.string.save_place_failed));
-        }
+        placeRepository.savePlace(place, addResult);
     }
 
     public String getUsername(){

@@ -16,4 +16,12 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <androidx.core.widget.ContentLoadingProgressBar
+        android:id="@+id/home_pg_loading"
+        app:layout_constraintTop_toBottomOf="@id/home_lv_places"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="visible">
+    </androidx.core.widget.ContentLoadingProgressBar>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
