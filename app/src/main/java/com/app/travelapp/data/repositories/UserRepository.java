@@ -4,6 +4,7 @@ import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.app.travelapp.data.datasources.Session;
 import com.app.travelapp.data.model.Place;
 import com.app.travelapp.data.model.User;
 import com.app.travelapp.ui.auth.AuthResult;
@@ -25,10 +26,6 @@ public class UserRepository {
     private DataSourceCache dataSourceCache;
     private DataSourceFirebase dataSourceFirebase;
 
-    // If user credentials will be cached in local storage, it is recommended it be encrypted
-    // @see https://developer.android.com/training/articles/keystore
-    private LoggedInUser user = null;
-
     // private constructor : singleton access
     private UserRepository(DataSourceCache dataSourceCache, DataSourceFirebase dataSourceFirebase) {
         this.dataSourceCache = dataSourceCache;
@@ -42,31 +39,14 @@ public class UserRepository {
         return instance;
     }
 
-    public boolean isLoggedIn() {
-        return user != null;
-    }
-
-    public void logout() {
-        user = null;
-        dataSourceCache.logout();
-    }
-
-    public LoggedInUser getLoggedInUser(){
-        return user;
-    }
-
-    public void setLoggedInUser(LoggedInUser user) {
-        this.user = user;
-        // If user credentials will be cached in local storage, it is recommended it be encrypted
-        // @see https://developer.android.com/training/articles/keystore
-    }
 
     public Result<LoggedInUser> login(String email, String password) {
         // handle login
         // FOR CACHE
         Result<LoggedInUser> result = dataSourceCache.login(email, password);
         if (result instanceof Result.Success) {
-            setLoggedInUser(((Result.Success<LoggedInUser>) result).getData());
+            LoggedInUser loggedInUser = ((Result.Success<LoggedInUser>) result).getData();
+            Session.setLoggedUser(loggedInUser);
         }
         //return dataSourceFirebase.login(email, password);
         return result;
@@ -77,7 +57,8 @@ public class UserRepository {
         Result<LoggedInUser> result = dataSourceFirebase.signUp(user);
         if(result instanceof Result.Success){
             // the user could signed up and logged in successfully
-            setLoggedInUser(((Result.Success<LoggedInUser>) result).getData());
+            LoggedInUser loggedInUser = ((Result.Success<LoggedInUser>) result).getData();
+            Session.setLoggedUser(loggedInUser);
         }
         return result;
     }

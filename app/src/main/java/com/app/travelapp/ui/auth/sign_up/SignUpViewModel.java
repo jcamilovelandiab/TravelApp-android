@@ -27,16 +27,8 @@ public class SignUpViewModel extends ViewModel {
         return signUpFormState;
     }
 
-    public void setSignUpFormState(MutableLiveData<SignUpFormState> signUpFormState) {
-        this.signUpFormState = signUpFormState;
-    }
-
     LiveData<AuthResult> getSignUpResult() {
         return signUpResult;
-    }
-
-    public void setSignUpResult(MutableLiveData<AuthResult> signUpResult) {
-        this.signUpResult = signUpResult;
     }
 
     void signUpDataChanged(String full_name, String username, String email, String password,  String confirm_password){
