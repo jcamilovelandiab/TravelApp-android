@@ -11,6 +11,7 @@ import androidx.lifecycle.Observer;
 import com.app.travelapp.R;
 import com.app.travelapp.data.model.LoggedInUser;
 import com.app.travelapp.data.model.Place;
+import com.app.travelapp.data.model.Role;
 import com.app.travelapp.data.model.User;
 import com.app.travelapp.ui.auth.AuthResult;
 import com.app.travelapp.ui.auth.LoggedInUserView;
@@ -82,10 +83,11 @@ public class DataSourceFirebase {
                     username_query = document.getString("username");
                     password_query = document.getString("password");
                     full_name_query = document.getString("full_name");
-                    User user = new User(username_query+"", email_query+"",password_query+"",full_name_query+"");
-                    if(user.getPassword().equals(password)){
+                    String role = document.getString("role");
+                    if(password_query.equals(password)){
                         LoggedInUser loggedInUser = new LoggedInUser(username_query+"", email_query+"", full_name_query+"");
                         Session.setLoggedInUser(loggedInUser);
+                        Session.setRole(Role.valueOf(role));
                         loginResult.setValue(new AuthResult(new LoggedInUserView(loggedInUser.getFull_name())));
                     }else{
                         loginResult.setValue(new AuthResult("Invalid login"));
@@ -106,11 +108,13 @@ public class DataSourceFirebase {
         userMp.put("username", user.getUsername());
         userMp.put("password", user.getPassword());
         userMp.put("full_name",user.getFull_name());
+        userMp.put("role", Role.user.toString());
         try{
             db.collection("/Users").document(user.getEmail()).set(userMp);
             LoggedInUser loggedInUser = new LoggedInUser(user.getUsername()+"",
                     user.getEmail()+"", user.getFull_name()+"");
             Session.setLoggedInUser(loggedInUser);
+            Session.setRole(Role.user);
             signUpResult.setValue(new AuthResult(new LoggedInUserView(user.getFull_name())));
         }catch(Exception ex){
             signUpResult.setValue(new AuthResult("An error occurred while the user was signing up"));
@@ -288,6 +292,26 @@ public class DataSourceFirebase {
                     place.setAuthor(author);
                     place.setPlaceId(document.getId());
                     placeQuery.setValue(place);
+                }
+            }
+        });
+    }
+
+    public void findPlacesByName(String name, MutableLiveData<List<Place>> placesQuery) {
+        db.collection("/Places").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    List<Place> placeList = new ArrayList<>();
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        Place place = documentToPlace(document);
+                        if(place.getName().equals(name)){
+                            placeList.add(place);
+                        }
+                    }
+                    placesQuery.setValue(placeList);
+                } else {
+                    Log.d("Error", "Error getting documents: ", task.getException());
                 }
             }
         });

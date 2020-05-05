@@ -62,4 +62,19 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/search_et_search_text"/>
 
+    <ProgressBar
+        android:id="@+id/search_pg_loading"
+        app:layout_constraintTop_toBottomOf="@id/search_lv_places"
+        android:layout_width="match_parent"
+        android:foregroundGravity="center_horizontal"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+    </ProgressBar>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

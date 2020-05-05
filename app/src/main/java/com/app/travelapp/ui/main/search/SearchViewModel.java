@@ -27,8 +27,7 @@ public class SearchViewModel extends ViewModel {
 
     public void findPlacesByName(String search_name) {
         if(search_name==null || search_name.isEmpty()) return;
-        List<Place> places = placeRepository.findByName(search_name);
-        placeList.setValue(places);
+        placeRepository.findPlacesByName(search_name, placeList);
     }
 
 }

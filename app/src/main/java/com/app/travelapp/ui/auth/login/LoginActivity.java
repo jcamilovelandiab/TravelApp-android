@@ -27,11 +27,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.travelapp.R;
+import com.app.travelapp.data.datasources.Session;
+import com.app.travelapp.data.model.Role;
 import com.app.travelapp.ui.auth.sign_up.SignUpActivity;
 import com.app.travelapp.ui.auth.AuthResult;
 import com.app.travelapp.ui.auth.AuthViewModelFactory;
 import com.app.travelapp.ui.auth.LoggedInUserView;
 import com.app.travelapp.ui.main.MainActivity;
+import com.app.travelapp.ui.main_admin.MainAdminActivity;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -145,10 +148,18 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void updateUiWithUser(LoggedInUserView model) {
-        String welcome = getString(R.string.welcome) +" "+ model.getDisplayName() +"!";
+        String welcome = getString(R.string.welcome);
         // TODO : initiate successful logged in experience
+
+        Intent intent;
+        if(Session.getRole().equals(Role.user)){
+            welcome+= " "+ model.getDisplayName() +"!";
+            intent = new Intent(this, MainActivity.class);
+        }else{
+            welcome+=" admin "+ model.getDisplayName()+"!";
+            intent = new Intent(this, MainAdminActivity.class);
+        }
         Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
-        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         setResult(Activity.RESULT_OK);
         //Complete and destroy login activity once successful

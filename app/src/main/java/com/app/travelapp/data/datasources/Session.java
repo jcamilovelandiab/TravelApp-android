@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 
 import com.app.travelapp.R;
 import com.app.travelapp.data.model.LoggedInUser;
+import com.app.travelapp.data.model.Role;
 
 
 public class Session {
@@ -13,6 +14,7 @@ public class Session {
     private final String TOKEN_KEY = "TOKEN_KEY";
     //private final SharedPreferences sharedPreferences;
     private static LoggedInUser loggedInUser;
+    private static Role role;
 
     /*public Session(Context context ){
         this.sharedPreferences =
@@ -30,5 +32,13 @@ public class Session {
 
     public static void logout() {
         loggedInUser = null;
+    }
+
+    public static Role getRole() {
+        return role;
+    }
+
+    public static void setRole(Role role) {
+        Session.role = role;
     }
 }

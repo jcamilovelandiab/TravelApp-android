@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -29,6 +30,7 @@ public class SearchFragment extends Fragment {
     ListView lv_places;
     EditText et_search_text;
     //Button btn_search;
+    ProgressBar pg_loading;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -44,25 +46,17 @@ public class SearchFragment extends Fragment {
     private void connectModelWithView(View view){
         lv_places = view.findViewById(R.id.search_lv_places);
         et_search_text = view.findViewById(R.id.search_et_search_text);
+        pg_loading = view.findViewById(R.id.search_pg_loading);
         //btn_search = view.findViewById(R.id.search_btn_search);
     }
 
     private void configureSearch(){
-        /*btn_search.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(et_search_text.getText().toString().isEmpty()){
-                    Toast.makeText(getContext(), "Insert a keyword please.", Toast.LENGTH_SHORT).show();
-                }else{
-                    searchViewModel.findPlacesByName(et_search_text.getText().toString());
-                }
-            }
-        });*/
         et_search_text.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if(actionId == EditorInfo.IME_ACTION_SEARCH){
                     searchViewModel.findPlacesByName(et_search_text.getText().toString());
+                    pg_loading.setVisibility(View.VISIBLE);
                 }
                 return false;
             }
@@ -76,6 +70,7 @@ public class SearchFragment extends Fragment {
                 PlaceArrayAdapter adapter = new PlaceArrayAdapter(getActivity(), (ArrayList) places);
                 lv_places.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
+                pg_loading.setVisibility(View.GONE);
             }
         });
     }

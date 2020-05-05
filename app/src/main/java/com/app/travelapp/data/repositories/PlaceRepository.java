@@ -49,6 +49,10 @@ public class PlaceRepository {
         return dataSourceCache.getPlacesByName(name);
     }
 
+    public void findPlacesByName(String name, MutableLiveData<List<Place>> places){
+        dataSourceFirebase.findPlacesByName(name, places);
+    }
+
     public Result savePlace(Place place){
         return dataSourceCache.savePlace(place);
     }

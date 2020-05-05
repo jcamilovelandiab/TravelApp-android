@@ -6,6 +6,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.app.travelapp.R;
 import com.app.travelapp.data.datasources.DataSourceCache;
@@ -42,8 +43,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        //getMenuInflater().inflate(R.menu.);
-        return super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
     }
 
     @Override
@@ -54,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
                 finish();
                 Session.logout();
                 Intent intent = new Intent(this, LoginActivity.class);
+                Toast.makeText(this, "See you soon!!", Toast.LENGTH_SHORT).show();
                 startActivity(intent);
                 break;
         }
