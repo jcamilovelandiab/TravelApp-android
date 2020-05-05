@@ -3,4 +3,7 @@
     <item
         android:id="@+id/main_menu_action_logout"
         android:title="@string/action_logout"/>
+    <item
+        android:id="@+id/main_menu_action_credits"
+        android:title="@string/title_creditos"/>
 </menu>

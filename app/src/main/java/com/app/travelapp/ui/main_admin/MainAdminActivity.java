@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.app.travelapp.R;
 import com.app.travelapp.data.datasources.Session;
 import com.app.travelapp.ui.auth.login.LoginActivity;
+import com.app.travelapp.ui.creditos.CreditosActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.annotation.NonNull;
@@ -44,13 +45,18 @@ public class MainAdminActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        Intent intent;
         switch (item.getItemId()){
             case R.id.main_menu_action_logout:
                 setResult(Activity.RESULT_OK);
                 finish();
                 Session.logout();
-                Intent intent = new Intent(this, LoginActivity.class);
+                intent = new Intent(this, LoginActivity.class);
                 Toast.makeText(this, "See you soon!!", Toast.LENGTH_SHORT).show();
+                startActivity(intent);
+                break;
+            case R.id.main_menu_action_credits:
+                intent = new Intent(this, CreditosActivity.class);
                 startActivity(intent);
                 break;
         }

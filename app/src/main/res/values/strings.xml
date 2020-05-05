@@ -56,6 +56,17 @@
     <string name="preference_file_key">preference file key</string>
     <string name="title_activity_main_admin">MainAdminActivity</string>
     <string name="title_users">Users</string>
-
-
+    <string name="university">Instituto Tecnológico de Toluca</string>
+    <string name="title_creditos">Creditos</string>
+    <string name="student">Juan Camilo Velandia Botello</string>
+    <string name="studen_label">Estudiante</string>
+    <string name="professor_label">Profesor</string>
+    <string name="profesor">M. en C. Rocio Elizabeth Pulido Alba</string>
+    <string name="major_label">Carrera:</string>
+    <string name="major">Ingeniería en Sistemas Computacionales</string>
+    <string name="class_name">Desarrollo de Aplicaciones Móviles</string>
+    <string name="class_label">Materia:</string>
+    <string name="semester">Semestre: Enero - Junio</string>
+    <string name="grupo">grupo: Sist-Tics</string>
+    <string name="ciclo">Ciclo escolar 2020</string>
 </resources>

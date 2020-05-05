@@ -15,9 +15,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ui.creditos.CreditosActivity"></activity>
         <activity
             android:name=".ui.main_admin.MainAdminActivity"
-            android:label="@string/title_activity_main_admin"></activity>
+            android:label="@string/title_activity_main_admin" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
