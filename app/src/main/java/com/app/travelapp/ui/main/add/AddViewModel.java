@@ -20,23 +20,18 @@ import java.util.List;
 import java.util.UUID;
 
 public class AddViewModel extends ViewModel {
-
     private PlaceRepository placeRepository;
     private MutableLiveData<BasicResult> addResult = new MutableLiveData<>();
     private MutableLiveData<AddFormState> addFormState = new MutableLiveData<>();
-
     public AddViewModel(PlaceRepository placeRepository) {
         this.placeRepository = placeRepository;
     }
-
     public LiveData<BasicResult> getAddResult() {
         return addResult;
     }
-
     public LiveData<AddFormState> getAddFormState() {
         return addFormState;
     }
-
     public void dataChanged(String name, String description, String address, String picture_path){
         if(!Validator.isStringValid(name)){
             addFormState.setValue(new AddFormState(R.string.invalid_place_name, null, null, null));
@@ -50,7 +45,6 @@ public class AddViewModel extends ViewModel {
             addFormState.setValue(new AddFormState(true));
         }
     }
-
     public void addPlace(String name, String description, String address, String picture_path){
         List<String> images = new ArrayList<>(); images.add(picture_path);
         LoggedInUser loggedInUser = Session.getLoggedInUser();
@@ -60,9 +54,7 @@ public class AddViewModel extends ViewModel {
                 address+"", images, author);
         placeRepository.savePlace(place, addResult);
     }
-
     public String getUsername(){
         return Session.getLoggedInUser().getUsername();
     }
-
 }

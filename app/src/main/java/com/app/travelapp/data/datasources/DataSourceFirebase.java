@@ -38,22 +38,19 @@ import java.util.Map;
 
 public class DataSourceFirebase {
 
-
     private static DataSourceFirebase instance;
     private Context context;
     FirebaseFirestore db;
 
+    // private constructor : singleton access
     private DataSourceFirebase(Context context){
         this.context = context;
         this.db = FirebaseFirestore.getInstance();
+        //Offline configuration
         FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
                 .setPersistenceEnabled(true)
                 .build();
         this.db.setFirestoreSettings(settings);
-    }
-
-    private DataSourceFirebase(){
-        this.db = FirebaseFirestore.getInstance();
     }
 
     public static DataSourceFirebase getInstance(Context context){
@@ -63,22 +60,12 @@ public class DataSourceFirebase {
         return instance;
     }
 
-    public FirebaseFirestore getDatabase(){
-        return this.db;
-    }
-
-    public static DataSourceFirebase getInstance(){
-        if(instance==null){
-            instance = new DataSourceFirebase();
-        }
-        return instance;
-    }
 
     // Users
     public void login(String email,String password, MutableLiveData<AuthResult> loginResult) {
         // TODO: handle loggedInUser authentication
         MutableLiveData<AuthResult> authResult = new MutableLiveData<>();
-        DocumentReference docRef = DataSourceFirebase.getInstance().getDatabase().collection("/Users").document(email);
+        DocumentReference docRef = db.collection("/Users").document(email);
         docRef.get().addOnCompleteListener( task ->{
             if(task.isSuccessful()){
                 DocumentSnapshot document = task.getResult();
@@ -213,7 +200,8 @@ public class DataSourceFirebase {
         Map<String, Object> hashMap = new HashMap<>();
         hashMap.put("address", place.getAddress());
         hashMap.put("description", place.getDescription());
-        db.collection("/Places").document(place.getPlaceId()).update(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+        db.collection("/Places").document(place.getPlaceId()).update(hashMap).
+                addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()){

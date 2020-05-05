@@ -18,13 +18,10 @@ import com.app.travelapp.ui.main.search.SearchViewModel;
 import com.app.travelapp.ui.main_admin.users.UsersViewModel;
 
 public class ViewModelFactory implements ViewModelProvider.Factory {
-
     private Context context;
-    
     public ViewModelFactory(Context context){
         this.context = context;
     }
-
     @Override
     @SuppressWarnings("unchecked")
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {

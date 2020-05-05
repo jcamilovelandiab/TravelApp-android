@@ -42,6 +42,21 @@ public class UserRepository {
         return instance;
     }
 
+    public void login(String email, String password, MutableLiveData<AuthResult> loginResult){
+        dataSourceFirebase.login(email, password, loginResult);
+    }
+
+    public void signUp(User user, MutableLiveData<AuthResult> signUpResult){
+        dataSourceFirebase.signUp(user, signUpResult);
+    }
+
+    public void getPlacesFromUser(User user, MutableLiveData<List<Place>> placesQuery){
+        dataSourceFirebase.getPlacesFromUser(user, placesQuery);
+    }
+
+    public void findAll(MutableLiveData<List<User>> usersQuery) {
+        dataSourceFirebase.getUsers(usersQuery);
+    }
 
     public Result<LoggedInUser> login(String email, String password) {
         // handle login
@@ -55,9 +70,7 @@ public class UserRepository {
         return result;
     }
 
-    public void login(String email, String password, MutableLiveData<AuthResult> loginResult){
-        dataSourceFirebase.login(email, password, loginResult);
-    }
+
 
     public Result<LoggedInUser> signUp(User user){
         Result<LoggedInUser> result = dataSourceCache.signUp(user);
@@ -69,19 +82,9 @@ public class UserRepository {
         return result;
     }
 
-    public void signUp(User user, MutableLiveData<AuthResult> signUpResult){
-        dataSourceFirebase.signUp(user, signUpResult);
-    }
-
     public List<Place> getPlacesFromUser(User user){
         return dataSourceCache.getPlacesFromUser(user);
     }
 
-    public void getPlacesFromUser(User user, MutableLiveData<List<Place>> placesQuery){
-        dataSourceFirebase.getPlacesFromUser(user, placesQuery);
-    }
 
-    public void findAll(MutableLiveData<List<User>> usersQuery) {
-        dataSourceFirebase.getUsers(usersQuery);
-    }
 }

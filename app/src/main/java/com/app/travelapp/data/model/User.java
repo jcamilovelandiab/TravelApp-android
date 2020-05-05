@@ -3,15 +3,12 @@ package com.app.travelapp.data.model;
 import java.util.List;
 
 public class User {
-
     private String userId;
     private String username;
     private String email;
     private String password;
     private String full_name;
-    private List<Place> places;
     private String role;
-
     public User(String username, String email, String password, String full_name) {
         this.username = username;
         this.email = email;
@@ -67,14 +64,6 @@ public class User {
 
     public void setUserId(String userId) {
         this.userId = userId;
-    }
-
-    public List<Place> getPlaces() {
-        return places;
-    }
-
-    public void setPlaces(List<Place> places) {
-        this.places = places;
     }
 
     public String getRole() {
