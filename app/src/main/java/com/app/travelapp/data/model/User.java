@@ -76,4 +76,12 @@ public class User {
     public void setPlaces(List<Place> places) {
         this.places = places;
     }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
 }

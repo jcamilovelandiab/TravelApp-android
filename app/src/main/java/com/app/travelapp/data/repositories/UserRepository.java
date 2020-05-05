@@ -81,4 +81,7 @@ public class UserRepository {
         dataSourceFirebase.getPlacesFromUser(user, placesQuery);
     }
 
+    public void findAll(MutableLiveData<List<User>> usersQuery) {
+        dataSourceFirebase.getUsers(usersQuery);
+    }
 }

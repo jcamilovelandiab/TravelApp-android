@@ -15,6 +15,7 @@ import com.app.travelapp.ui.main.add.AddViewModel;
 import com.app.travelapp.ui.main.home.HomeViewModel;
 import com.app.travelapp.ui.main.profile.ProfileViewModel;
 import com.app.travelapp.ui.main.search.SearchViewModel;
+import com.app.travelapp.ui.main_admin.users.UsersViewModel;
 
 public class ViewModelFactory implements ViewModelProvider.Factory {
 
@@ -40,6 +41,8 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
             return (T) new AddViewModel(PlaceRepository.getInstance(dataSourceCache, dataSourceFirebase));
         } else if(modelClass.isAssignableFrom(EditPostViewModel.class)){
             return (T) new EditPostViewModel(PlaceRepository.getInstance(dataSourceCache, dataSourceFirebase));
+        } else if(modelClass.isAssignableFrom(UsersViewModel.class)){
+            return (T) new UsersViewModel(UserRepository.getInstance(dataSourceCache, dataSourceFirebase));
         } else {
             throw new IllegalArgumentException("Unknown ViewModel class");
         }

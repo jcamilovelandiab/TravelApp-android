@@ -25,6 +25,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -45,6 +46,10 @@ public class DataSourceFirebase {
     private DataSourceFirebase(Context context){
         this.context = context;
         this.db = FirebaseFirestore.getInstance();
+        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+                .setPersistenceEnabled(true)
+                .build();
+        this.db.setFirestoreSettings(settings);
     }
 
     private DataSourceFirebase(){
@@ -121,15 +126,6 @@ public class DataSourceFirebase {
         }
     }
 
-    private boolean checkUsernameAlreadyExists(String username){
-        /*for(Map.Entry<String,User> entry: usersMap.entrySet()){
-            if(entry.getValue().getUsername().equals(username)){
-                return true;
-            }
-        }*/
-        return false;
-    }
-
     public void logout() {
         // TODO: revoke authentication
     }
@@ -184,35 +180,6 @@ public class DataSourceFirebase {
         });
     }
 
-    public List<Place> getPlacesByName(String name){
-        List<Place> places = new ArrayList<>();
-        /*for(Map.Entry<String, Place> entry: placesMap.entrySet()){
-            if(entry.getValue().getName().toLowerCase().equals(name.toLowerCase())){
-                places.add(entry.getValue());
-            }
-        }*/
-        return places;
-    }
-
-    public List<Place> getPlacesFromUser(User user) {
-        List<Place> places = new ArrayList<>();
-        /*for(Map.Entry<String, Place> entry: placesMap.entrySet()){
-            if(entry.getValue().getAuthor().getEmail().equals(user.getEmail())){
-                places.add(entry.getValue());
-            }
-        }*/
-        return places;
-    }
-
-    public Result savePlace(Place place) {
-        try{
-            //lacesMap.put(place.getPlaceId(), place);
-            return new Result.Success<>("Place was successfully saved");
-        }catch(Exception ex){
-            return new Result.Error(new IOException("Whoops!!!. An error occurred while saving place."));
-        }
-    }
-
     public void savePlace(Place place, MutableLiveData<BasicResult> addResult){
         //
         Map<String, Object> placeData = new HashMap<>();
@@ -240,13 +207,6 @@ public class DataSourceFirebase {
                         Log.w("Error saving place", "Error writing document", e);
                     }
                 });
-    }
-
-    public Place getPlaceById(String placeId){
-        /*if(placesMap.containsKey(placeId)){
-            return placesMap.get(placeId);
-        }*/
-        return null;
     }
 
     public void updatePlace(Place place, MutableLiveData<BasicResult> updatePlaceResult){
@@ -316,4 +276,34 @@ public class DataSourceFirebase {
             }
         });
     }
+
+    public void getUsers(MutableLiveData<List<User>> usersQuery) {
+        db.collection("/Users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    List<User> userList = new ArrayList<>();
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        User user = documentToUser(document);
+                        userList.add(user);
+                    }
+                    usersQuery.setValue(userList);
+                } else {
+                    Log.d("Error", "Error getting documents: ", task.getException());
+                }
+            }
+        });
+    }
+
+    private User documentToUser(QueryDocumentSnapshot document){
+        String email, username, full_name, role;
+        email = document.getString("email");
+        username = document.getString("username");
+        full_name= document.getString("full_name");
+        role = document.getString("role");
+        User user = new User(username+"", email+"", full_name+"");
+        user.setRole(role);
+        return user;
+    }
+
 }
