@@ -61,6 +61,7 @@ public class EditPostActivity extends AppCompatActivity {
         configureTextWatchers();
         configureBtnUpdate();
         retrievePlaceInformation();
+        preparePlaceInformationObserver();
     }
 
     private void connectModelWithView() {
@@ -135,17 +136,26 @@ public class EditPostActivity extends AppCompatActivity {
     }
 
     private void retrievePlaceInformation(){
-        place = editPostViewModel.getPlaceById(bundle.getString("placeId"));
-        tv_place_name.setText(place.getName());
-        et_place_description.setText(place.getDescription());
-        et_place_address.setText(place.getAddress());
-        if(place.getImages().size()>0){
-            picture_path = place.getImages().get(0);
-            loadImage(picture_path);
-        }else{
-            iv_place_picture.setImageDrawable(getResources().getDrawable(R.drawable.places1));
-        }
-        pg_loading.setVisibility(View.GONE);
+        editPostViewModel.getPlaceById(bundle.getString("placeId"));
+    }
+
+    private void preparePlaceInformationObserver(){
+        editPostViewModel.getLivePlace().observe(this, new Observer<Place>() {
+            @Override
+            public void onChanged(Place place) {
+                if(place==null) return;
+                tv_place_name.setText(place.getName());
+                et_place_description.setText(place.getDescription());
+                et_place_address.setText(place.getAddress());
+                if(place.getImages().size()>0){
+                    picture_path = place.getImages().get(0);
+                    loadImage(picture_path);
+                }else{
+                    iv_place_picture.setImageDrawable(getResources().getDrawable(R.drawable.places1));
+                }
+                pg_loading.setVisibility(View.GONE);
+            }
+        });
     }
 
     private void loadImage(String image_path){

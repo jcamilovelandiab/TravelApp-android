@@ -22,7 +22,7 @@ public class EditPostViewModel extends ViewModel {
     private PlaceRepository placeRepository;
     private MutableLiveData<BasicResult> editPostResult = new MutableLiveData<>();
     private MutableLiveData<EditPostFormState> editPostFormState = new MutableLiveData<>();
-    private Place place;
+    private MutableLiveData<Place> livePlace = new MutableLiveData<>();
 
     public EditPostViewModel(PlaceRepository placeRepository) {
         this.placeRepository = placeRepository;
@@ -35,31 +35,29 @@ public class EditPostViewModel extends ViewModel {
         return editPostFormState;
     }
 
+    public MutableLiveData<Place> getLivePlace() {
+        return livePlace;
+    }
+
     public void dataChanged(String description, String address){
         if(!Validator.isStringValid(description)){
-            editPostFormState.setValue(new EditPostFormState(null, R.string.invalid_place_description, null));
+            editPostFormState.setValue(new EditPostFormState(R.string.invalid_place_description, null));
         } else if(!Validator.isStringValid(address)){
-            editPostFormState.setValue(new EditPostFormState(null, null, R.string.invalid_place_address));
+            editPostFormState.setValue(new EditPostFormState(null, R.string.invalid_place_address));
         } else {
             editPostFormState.setValue(new EditPostFormState(true));
         }
     }
 
     public void updatePlace(String description, String address){
-        this.place.setDescription(description);
-        this.place.setAddress(address);
-        Result result = placeRepository.updatePlace(place);
-        if(result instanceof  Result.Success){
-            String data = (String) ((Result.Success) result).getData();
-            editPostResult.setValue(new BasicResult(data));
-        }else{
-            editPostResult.setValue(new BasicResult(R.string.update_place_failed));
-        }
+        Place place = livePlace.getValue();
+        place.setDescription(description);
+        place.setAddress(address);
+        placeRepository.updatePlace(place, editPostResult);
     }
 
-    public Place getPlaceById(String placeId){
-        this.place = placeRepository.findById(placeId);
-        return place;
+    public void getPlaceById(String placeId){
+        placeRepository.findPlaceById(placeId, livePlace);
     }
 
 }

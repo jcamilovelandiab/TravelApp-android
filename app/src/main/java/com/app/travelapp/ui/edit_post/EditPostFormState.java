@@ -5,9 +5,6 @@ import androidx.annotation.Nullable;
 class EditPostFormState {
 
     @Nullable
-    private Integer nameError;
-
-    @Nullable
     private Integer descriptionError;
 
     @Nullable
@@ -15,8 +12,7 @@ class EditPostFormState {
 
     private boolean isDataValid;
 
-    public EditPostFormState(@Nullable Integer nameError, @Nullable Integer descriptionError, @Nullable Integer addressError) {
-        this.nameError = nameError;
+    public EditPostFormState(Integer descriptionError, @Nullable Integer addressError) {
         this.descriptionError = descriptionError;
         this.addressError = addressError;
         this.isDataValid = false;
@@ -24,14 +20,8 @@ class EditPostFormState {
 
     public EditPostFormState(boolean isDataValid) {
         this.isDataValid = isDataValid;
-        this.nameError = null;
         this.descriptionError = null;
         this.addressError = null;
-    }
-
-    @Nullable
-    public Integer getNameError() {
-        return nameError;
     }
 
     @Nullable

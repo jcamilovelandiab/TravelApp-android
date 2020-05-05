@@ -245,14 +245,20 @@ public class DataSourceFirebase {
         return null;
     }
 
-    public Result updatePlace(Place place){
-        /*if(placesMap.containsKey(place.getPlaceId())){
-            placesMap.put(place.getPlaceId(), place);
-            return new Result.Success<>("Place was successfully updated");
-        }else{
-            return new Result.Error(new IOException("Whoops!!!. There is no place registered with the specified id"));
-        }*/
-        return null;
+    public void updatePlace(Place place, MutableLiveData<BasicResult> updatePlaceResult){
+        Map<String, Object> hashMap = new HashMap<>();
+        hashMap.put("address", place.getAddress());
+        hashMap.put("description", place.getDescription());
+        db.collection("/Places").document(place.getPlaceId()).update(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()){
+                    updatePlaceResult.setValue(new BasicResult("Place was successfully updated!"));
+                }else{
+                    updatePlaceResult.setValue(new BasicResult(R.string.update_place_failed));
+                }
+            }
+        });
     }
 
     public void deletePlace(String placeId, MutableLiveData<BasicResult> deletePlaceResult) {
@@ -269,4 +275,21 @@ public class DataSourceFirebase {
         });
     }
 
+    public void getPlaceById(String placeId, MutableLiveData<Place> placeQuery) {
+        db.collection("/Places").document(placeId).get().addOnCompleteListener( task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    Place place = document.toObject(Place.class);
+                    HashMap<String, Object> authorHashMap = (HashMap<String, Object>) document.get("author");
+                    User author = new User(authorHashMap.get("username")+"",
+                            authorHashMap.get("email")+"",
+                            authorHashMap.get("full_name")+"");
+                    place.setAuthor(author);
+                    place.setPlaceId(document.getId());
+                    placeQuery.setValue(place);
+                }
+            }
+        });
+    }
 }

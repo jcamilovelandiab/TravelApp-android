@@ -41,6 +41,10 @@ public class PlaceRepository {
         return dataSourceCache.getPlaceById(placeId);
     }
 
+    public void findPlaceById(String placeId, MutableLiveData<Place> placeQuery){
+        dataSourceFirebase.getPlaceById(placeId, placeQuery);
+    }
+
     public List<Place> findByName(String name){
         return dataSourceCache.getPlacesByName(name);
     }
@@ -55,6 +59,10 @@ public class PlaceRepository {
 
     public Result updatePlace(Place place) {
         return dataSourceCache.updatePlace(place);
+    }
+
+    public void updatePlace(Place place, MutableLiveData<BasicResult> updatePlaceResult){
+        dataSourceFirebase.updatePlace(place, updatePlaceResult);
     }
 
     public Result delete(String placeId) {
